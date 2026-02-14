@@ -24,6 +24,7 @@ const GearSchema = Schema(
       type: IsarType.long,
     )
   },
+
   estimateSize: _gearEstimateSize,
   serialize: _gearSerialize,
   deserialize: _gearDeserialize,

@@ -8,7 +8,6 @@ part of 'database_provider.dart';
 
 String _$isarHash() => r'a51ee5b8ff49566e564572482174ead7122d0d22';
 
-/// See also [isar].
 @ProviderFor(isar)
 final isarProvider = FutureProvider<Isar>.internal(
   isar,
