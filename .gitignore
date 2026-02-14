@@ -1,0 +1,52 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.vscode/
+
+# Project-specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android-specific
+android/**/generated/
+android/app/debug/
+android/app/release/
+android/app/src/main/res/values/strings.xml
+android/.gradle/
+android/local.properties
+android/gen/
+android/out/
+android/captures/
+*.apk
+*.aab
+*.p12
+*.jks
+*.keystore
+
+# iOS-specific (just in case you ever go there)
+ios/.generated/
+ios/.tags*
+ios/Flutter/.last_build_id
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.[mh]
+
+# Tooling
+.idea/
+*.iml
+*.iws
