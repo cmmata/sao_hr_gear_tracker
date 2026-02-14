@@ -21,87 +21,102 @@ const PlayerSchema = CollectionSchema(
       id: 0,
       name: r'armor',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'axe': PropertySchema(
       id: 1,
       name: r'axe',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'boots': PropertySchema(
       id: 2,
       name: r'boots',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'dagger': PropertySchema(
       id: 3,
       name: r'dagger',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'earrings': PropertySchema(
       id: 4,
       name: r'earrings',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'helmet': PropertySchema(
       id: 5,
       name: r'helmet',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'katana': PropertySchema(
       id: 6,
       name: r'katana',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'mace': PropertySchema(
       id: 7,
       name: r'mace',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'rapier': PropertySchema(
       id: 8,
       name: r'rapier',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'scimitar': PropertySchema(
       id: 9,
       name: r'scimitar',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'shield': PropertySchema(
       id: 10,
       name: r'shield',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'spear': PropertySchema(
       id: 11,
       name: r'spear',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'sword': PropertySchema(
       id: 12,
       name: r'sword',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'twoHandedSword': PropertySchema(
       id: 13,
       name: r'twoHandedSword',
       type: IsarType.object,
+
       target: r'Weapon',
-    )
+    ),
   },
+
   estimateSize: _playerEstimateSize,
   serialize: _playerSerialize,
   deserialize: _playerDeserialize,
@@ -110,10 +125,11 @@ const PlayerSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {r'Weapon': WeaponSchema, r'Gear': GearSchema},
+
   getId: _playerGetId,
   getLinks: _playerGetLinks,
   attach: _playerAttach,
-  version: '3.1.0+1',
+  version: '3.3.0',
 );
 
 int _playerEstimateSize(
@@ -124,34 +140,50 @@ int _playerEstimateSize(
   var bytesCount = offsets.last;
   bytesCount +=
       3 + GearSchema.estimateSize(object.armor, allOffsets[Gear]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.axe, allOffsets[Weapon]!, allOffsets);
   bytesCount +=
       3 + GearSchema.estimateSize(object.boots, allOffsets[Gear]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.dagger, allOffsets[Weapon]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       GearSchema.estimateSize(object.earrings, allOffsets[Gear]!, allOffsets);
   bytesCount +=
       3 + GearSchema.estimateSize(object.helmet, allOffsets[Gear]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.katana, allOffsets[Weapon]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.mace, allOffsets[Weapon]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.rapier, allOffsets[Weapon]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(
-          object.scimitar, allOffsets[Weapon]!, allOffsets);
+        object.scimitar,
+        allOffsets[Weapon]!,
+        allOffsets,
+      );
   bytesCount +=
       3 + GearSchema.estimateSize(object.shield, allOffsets[Gear]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.spear, allOffsets[Weapon]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(object.sword, allOffsets[Weapon]!, allOffsets);
-  bytesCount += 3 +
+  bytesCount +=
+      3 +
       WeaponSchema.estimateSize(
-          object.twoHandedSword, allOffsets[Weapon]!, allOffsets);
+        object.twoHandedSword,
+        allOffsets[Weapon]!,
+        allOffsets,
+      );
   return bytesCount;
 }
 
@@ -254,86 +286,100 @@ Player _playerDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Player();
-  object.armor = reader.readObjectOrNull<Gear>(
+  object.armor =
+      reader.readObjectOrNull<Gear>(
         offsets[0],
         GearSchema.deserialize,
         allOffsets,
       ) ??
       Gear();
-  object.axe = reader.readObjectOrNull<Weapon>(
+  object.axe =
+      reader.readObjectOrNull<Weapon>(
         offsets[1],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.boots = reader.readObjectOrNull<Gear>(
+  object.boots =
+      reader.readObjectOrNull<Gear>(
         offsets[2],
         GearSchema.deserialize,
         allOffsets,
       ) ??
       Gear();
-  object.dagger = reader.readObjectOrNull<Weapon>(
+  object.dagger =
+      reader.readObjectOrNull<Weapon>(
         offsets[3],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.earrings = reader.readObjectOrNull<Gear>(
+  object.earrings =
+      reader.readObjectOrNull<Gear>(
         offsets[4],
         GearSchema.deserialize,
         allOffsets,
       ) ??
       Gear();
-  object.helmet = reader.readObjectOrNull<Gear>(
+  object.helmet =
+      reader.readObjectOrNull<Gear>(
         offsets[5],
         GearSchema.deserialize,
         allOffsets,
       ) ??
       Gear();
   object.id = id;
-  object.katana = reader.readObjectOrNull<Weapon>(
+  object.katana =
+      reader.readObjectOrNull<Weapon>(
         offsets[6],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.mace = reader.readObjectOrNull<Weapon>(
+  object.mace =
+      reader.readObjectOrNull<Weapon>(
         offsets[7],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.rapier = reader.readObjectOrNull<Weapon>(
+  object.rapier =
+      reader.readObjectOrNull<Weapon>(
         offsets[8],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.scimitar = reader.readObjectOrNull<Weapon>(
+  object.scimitar =
+      reader.readObjectOrNull<Weapon>(
         offsets[9],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.shield = reader.readObjectOrNull<Gear>(
+  object.shield =
+      reader.readObjectOrNull<Gear>(
         offsets[10],
         GearSchema.deserialize,
         allOffsets,
       ) ??
       Gear();
-  object.spear = reader.readObjectOrNull<Weapon>(
+  object.spear =
+      reader.readObjectOrNull<Weapon>(
         offsets[11],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.sword = reader.readObjectOrNull<Weapon>(
+  object.sword =
+      reader.readObjectOrNull<Weapon>(
         offsets[12],
         WeaponSchema.deserialize,
         allOffsets,
       ) ??
       Weapon();
-  object.twoHandedSword = reader.readObjectOrNull<Weapon>(
+  object.twoHandedSword =
+      reader.readObjectOrNull<Weapon>(
         offsets[13],
         WeaponSchema.deserialize,
         allOffsets,
@@ -351,102 +397,116 @@ P _playerDeserializeProp<P>(
   switch (propertyId) {
     case 0:
       return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ) ??
-          Gear()) as P;
+                offset,
+                GearSchema.deserialize,
+                allOffsets,
+              ) ??
+              Gear())
+          as P;
     case 1:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 2:
       return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ) ??
-          Gear()) as P;
+                offset,
+                GearSchema.deserialize,
+                allOffsets,
+              ) ??
+              Gear())
+          as P;
     case 3:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 4:
       return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ) ??
-          Gear()) as P;
+                offset,
+                GearSchema.deserialize,
+                allOffsets,
+              ) ??
+              Gear())
+          as P;
     case 5:
       return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ) ??
-          Gear()) as P;
+                offset,
+                GearSchema.deserialize,
+                allOffsets,
+              ) ??
+              Gear())
+          as P;
     case 6:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 7:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 8:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 9:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 10:
       return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ) ??
-          Gear()) as P;
+                offset,
+                GearSchema.deserialize,
+                allOffsets,
+              ) ??
+              Gear())
+          as P;
     case 11:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 12:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     case 13:
       return (reader.readObjectOrNull<Weapon>(
-            offset,
-            WeaponSchema.deserialize,
-            allOffsets,
-          ) ??
-          Weapon()) as P;
+                offset,
+                WeaponSchema.deserialize,
+                allOffsets,
+              ) ??
+              Weapon())
+          as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -475,10 +535,7 @@ extension PlayerQueryWhereSort on QueryBuilder<Player, Player, QWhere> {
 extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
   QueryBuilder<Player, Player, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -504,8 +561,10 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Player, Player, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -513,8 +572,10 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Player, Player, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -529,12 +590,14 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -542,10 +605,9 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
 extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
   QueryBuilder<Player, Player, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -554,11 +616,13 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -567,11 +631,13 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -582,111 +648,127 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
 
 extension PlayerQueryObject on QueryBuilder<Player, Player, QFilterCondition> {
   QueryBuilder<Player, Player, QAfterFilterCondition> armor(
-      FilterQuery<Gear> q) {
+    FilterQuery<Gear> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'armor');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> axe(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'axe');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> boots(
-      FilterQuery<Gear> q) {
+    FilterQuery<Gear> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'boots');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> dagger(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'dagger');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> earrings(
-      FilterQuery<Gear> q) {
+    FilterQuery<Gear> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'earrings');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> helmet(
-      FilterQuery<Gear> q) {
+    FilterQuery<Gear> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'helmet');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> katana(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'katana');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> mace(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'mace');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> rapier(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'rapier');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> scimitar(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'scimitar');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> shield(
-      FilterQuery<Gear> q) {
+    FilterQuery<Gear> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'shield');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> spear(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'spear');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> sword(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'sword');
     });
   }
 
   QueryBuilder<Player, Player, QAfterFilterCondition> twoHandedSword(
-      FilterQuery<Weapon> q) {
+    FilterQuery<Weapon> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'twoHandedSword');
     });

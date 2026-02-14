@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/player.dart';
 import 'database_provider.dart';
@@ -6,18 +6,22 @@ import 'database_provider.dart';
 part 'player_provider.g.dart';
 
 @riverpod
-Stream<Player> player(PlayerRef ref) async* {
+Stream<Player> player(Ref ref) async* {
   final isar = await ref.watch(isarProvider.future);
 
-  // Ensure a player exists
-  final existingPlayer = await isar.players.where().findFirst();
-  if (existingPlayer == null) {
+  // Ensure a player exists with ID 0
+  final exists = await isar.players.get(0) != null;
+  if (!exists) {
     await isar.writeTxn(() async {
-      await isar.players.put(Player());
+      // Double check inside transaction
+      if (await isar.players.get(0) == null) {
+        await isar.players.put(Player()..id = 0);
+      }
     });
   }
 
-  yield* isar.players.where().watch(fireImmediately: true).map((players) => players.first);
+  yield* isar.players.watchObject(0, fireImmediately: true)
+      .map((p) => p ?? (Player()..id = 0));
 }
 
 @riverpod
@@ -28,7 +32,7 @@ class PlayerController extends _$PlayerController {
   Future<void> updatePlayer(Player player) async {
     final isar = await ref.read(isarProvider.future);
     await isar.writeTxn(() async {
-      await isar.players.put(player);
+      await isar.players.put(player..id = 0);
     });
   }
 }

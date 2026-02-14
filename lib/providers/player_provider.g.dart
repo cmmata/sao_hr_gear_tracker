@@ -6,35 +6,83 @@ part of 'player_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerHash() => r'b78026057ed80e55831ab14cc0c2e89d18fdf8eb';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [player].
 @ProviderFor(player)
-final playerProvider = AutoDisposeStreamProvider<Player>.internal(
-  player,
-  name: r'playerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const playerProvider = PlayerProvider._();
 
-typedef PlayerRef = AutoDisposeStreamProviderRef<Player>;
-String _$playerControllerHash() => r'991f1c94ad05e858586c0a99e6dbe574c00c5c6b';
+final class PlayerProvider
+    extends $FunctionalProvider<AsyncValue<Player>, Player, Stream<Player>>
+    with $FutureModifier<Player>, $StreamProvider<Player> {
+  const PlayerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'playerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [PlayerController].
+  @override
+  String debugGetCreateSourceHash() => _$playerHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<Player> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Player> create(Ref ref) {
+    return player(ref);
+  }
+}
+
+String _$playerHash() => r'c7b5874674cc2f4aaa2dea3fb9d08b863b9875c5';
+
 @ProviderFor(PlayerController)
-final playerControllerProvider =
-    AutoDisposeAsyncNotifierProvider<PlayerController, void>.internal(
-  PlayerController.new,
-  name: r'playerControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$playerControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const playerControllerProvider = PlayerControllerProvider._();
 
-typedef _$PlayerController = AutoDisposeAsyncNotifier<void>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class PlayerControllerProvider
+    extends $AsyncNotifierProvider<PlayerController, void> {
+  const PlayerControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'playerControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$playerControllerHash();
+
+  @$internal
+  @override
+  PlayerController create() => PlayerController();
+}
+
+String _$playerControllerHash() => r'4e8720e53e26b20ba6bc3654a822849862d0e6b5';
+
+abstract class _$PlayerController extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    build();
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, null);
+  }
+}

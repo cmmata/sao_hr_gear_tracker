@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'character.dart';
 import 'gear.dart';
 
@@ -6,7 +6,7 @@ part 'player.g.dart';
 
 @collection
 class Player {
-  Id id = Isar.autoIncrement;
+  Id id = 0; // Singleton player with fixed ID 0
 
   Weapon sword = Weapon();
   Weapon rapier = Weapon();
