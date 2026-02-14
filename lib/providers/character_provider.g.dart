@@ -13,9 +13,8 @@ String _$charactersHash() => r'ab448c538426087a9dc86aaf5736d821e59934d6';
 final charactersProvider = AutoDisposeStreamProvider<List<Character>>.internal(
   characters,
   name: r'charactersProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$charactersHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$charactersHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -54,13 +53,21 @@ class CharacterFamily extends Family<AsyncValue<Character?>> {
   const CharacterFamily();
 
   /// See also [character].
-  CharacterProvider call(int id) {
-    return CharacterProvider(id);
+  CharacterProvider call(
+    int id,
+  ) {
+    return CharacterProvider(
+      id,
+    );
   }
 
   @override
-  CharacterProvider getProviderOverride(covariant CharacterProvider provider) {
-    return call(provider.id);
+  CharacterProvider getProviderOverride(
+    covariant CharacterProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -81,18 +88,23 @@ class CharacterFamily extends Family<AsyncValue<Character?>> {
 /// See also [character].
 class CharacterProvider extends AutoDisposeStreamProvider<Character?> {
   /// See also [character].
-  CharacterProvider(int id)
-    : this._internal(
-        (ref) => character(ref as CharacterRef, id),
-        from: characterProvider,
-        name: r'characterProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$characterHash,
-        dependencies: CharacterFamily._dependencies,
-        allTransitiveDependencies: CharacterFamily._allTransitiveDependencies,
-        id: id,
-      );
+  CharacterProvider(
+    int id,
+  ) : this._internal(
+          (ref) => character(
+            ref as CharacterRef,
+            id,
+          ),
+          from: characterProvider,
+          name: r'characterProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$characterHash,
+          dependencies: CharacterFamily._dependencies,
+          allTransitiveDependencies: CharacterFamily._allTransitiveDependencies,
+          id: id,
+        );
 
   CharacterProvider._internal(
     super._createNotifier, {
@@ -149,8 +161,7 @@ mixin CharacterRef on AutoDisposeStreamProviderRef<Character?> {
 }
 
 class _CharacterProviderElement
-    extends AutoDisposeStreamProviderElement<Character?>
-    with CharacterRef {
+    extends AutoDisposeStreamProviderElement<Character?> with CharacterRef {
   _CharacterProviderElement(super.provider);
 
   @override
@@ -158,20 +169,20 @@ class _CharacterProviderElement
 }
 
 String _$characterControllerHash() =>
-    r'aeb626e4adb45f8239670087dd81b6c854507e52';
+    r'c31604e4c7c384fd6e65a75f0d443d860d9863e9';
 
 /// See also [CharacterController].
 @ProviderFor(CharacterController)
 final characterControllerProvider =
     AutoDisposeAsyncNotifierProvider<CharacterController, void>.internal(
-      CharacterController.new,
-      name: r'characterControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$characterControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  CharacterController.new,
+  name: r'characterControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$characterControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$CharacterController = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
