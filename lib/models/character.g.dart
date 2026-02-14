@@ -26,6 +26,7 @@ const CharacterSchema = CollectionSchema(
       id: 1,
       name: r'armor',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'bedtimes': PropertySchema(id: 2, name: r'bedtimes', type: IsarType.long),
@@ -33,18 +34,21 @@ const CharacterSchema = CollectionSchema(
       id: 3,
       name: r'boots',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'earrings': PropertySchema(
       id: 4,
       name: r'earrings',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'helmet': PropertySchema(
       id: 5,
       name: r'helmet',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'name': PropertySchema(id: 6, name: r'name', type: IsarType.string),
@@ -52,12 +56,14 @@ const CharacterSchema = CollectionSchema(
       id: 7,
       name: r'shield',
       type: IsarType.object,
+
       target: r'Gear',
     ),
     r'weapon': PropertySchema(
       id: 8,
       name: r'weapon',
       type: IsarType.object,
+
       target: r'Weapon',
     ),
     r'weaponType': PropertySchema(
@@ -67,6 +73,7 @@ const CharacterSchema = CollectionSchema(
       enumMap: _CharacterweaponTypeEnumValueMap,
     ),
   },
+
   estimateSize: _characterEstimateSize,
   serialize: _characterSerialize,
   deserialize: _characterDeserialize,
@@ -75,10 +82,11 @@ const CharacterSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {r'Weapon': WeaponSchema, r'Gear': GearSchema},
+
   getId: _characterGetId,
   getLinks: _characterGetLinks,
   attach: _characterAttach,
-  version: '3.1.0+1',
+  version: '3.3.0',
 );
 
 int _characterEstimateSize(
@@ -1194,6 +1202,7 @@ const WeaponSchema = Schema(
       type: IsarType.long,
     ),
   },
+
   estimateSize: _weaponEstimateSize,
   serialize: _weaponSerialize,
   deserialize: _weaponDeserialize,
