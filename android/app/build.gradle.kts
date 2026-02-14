@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.cmmata.sao_gear_tracker"
+    namespace = "com.cmmata.saoGearTracker"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.cmmata.sao_gear_tracker"
+        applicationId = "com.cmmata.saoGearTracker"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
