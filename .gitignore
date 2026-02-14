@@ -50,3 +50,4 @@ ios/Runner/GeneratedPluginRegistrant.[mh]
 .idea/
 *.iml
 *.iws
+*.py
