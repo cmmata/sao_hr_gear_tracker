@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/character.dart';
 import 'database_provider.dart';
@@ -6,13 +6,13 @@ import 'database_provider.dart';
 part 'character_provider.g.dart';
 
 @riverpod
-Stream<List<Character>> characters(CharactersRef ref) async* {
+Stream<List<Character>> characters(Ref ref) async* {
   final isar = await ref.watch(isarProvider.future);
   yield* isar.characters.where().sortByName().watch(fireImmediately: true);
 }
 
 @riverpod
-Stream<Character?> character(CharacterRef ref, int id) async* {
+Stream<Character?> character(Ref ref, int id) async* {
   final isar = await ref.watch(isarProvider.future);
   yield* isar.characters.watchObject(id, fireImmediately: true);
 }
