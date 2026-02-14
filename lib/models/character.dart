@@ -7,6 +7,7 @@ part 'character.g.dart';
 class Character {
   Id id = Isar.autoIncrement;
 
+  @Index()
   String? name;
 
   @enumerated
