@@ -6,15 +6,16 @@ part of 'database_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$isarHash() => r'a51ee5b8ff49566e564572482174ead7122d0d22';
+String _$isarHash() => r'352c53dacfdfaa4ba49de4a0db66d12008673529';
 
 /// See also [isar].
 @ProviderFor(isar)
 final isarProvider = FutureProvider<Isar>.internal(
   isar,
   name: r'isarProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$isarHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$isarHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
