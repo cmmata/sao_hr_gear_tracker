@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/character_provider.dart';
 import '../widgets/character_card.dart';
-import '../widgets/add_character_dialog.dart';
+import 'add_character_screen.dart';
 import '../widgets/upgrade_picker_dialog.dart';
-import 'edit_character_screen.dart';
+import '../widgets/weapon_upgrade_picker.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -18,12 +18,22 @@ class HomeScreen extends ConsumerWidget {
         title: const Text('SAO:HR Gear Tracker'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.upgrade),
-            tooltip: 'Find Upgrade Candidate',
+            icon: const Icon(Icons.colorize), // Sword icon for Weapon Upgrade
+            tooltip: 'Find Weapon Upgrade',
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => const UpgradePickerDialog(),
+                builder: (context) => const WeaponUpgradePicker(),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.shield), // Shield icon for Gear Upgrade
+            tooltip: 'Find Gear Upgrade',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => const GearUpgradePicker(),
               );
             },
           ),
@@ -45,8 +55,7 @@ class HomeScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          EditCharacterScreen(character: char),
+                      builder: (context) => AddCharacterScreen(character: char),
                     ),
                   );
                 },
@@ -54,8 +63,7 @@ class HomeScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          EditCharacterScreen(character: char),
+                      builder: (context) => AddCharacterScreen(character: char),
                     ),
                   );
                 },
@@ -68,9 +76,9 @@ class HomeScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => const AddCharacterDialog(),
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddCharacterScreen()),
           );
         },
         child: const Icon(Icons.add),

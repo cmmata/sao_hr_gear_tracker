@@ -3,17 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../providers/character_provider.dart';
 
-enum GearSlot { shield, helmet, armor, boots, earrings }
-
-class GearUpgradePicker extends ConsumerStatefulWidget {
-  const GearUpgradePicker({super.key});
+class WeaponUpgradePicker extends ConsumerStatefulWidget {
+  const WeaponUpgradePicker({super.key});
 
   @override
-  ConsumerState<GearUpgradePicker> createState() => _GearUpgradePickerState();
+  ConsumerState<WeaponUpgradePicker> createState() =>
+      _WeaponUpgradePickerState();
 }
 
-class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
-  GearSlot _selectedSlot = GearSlot.helmet;
+class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
+  WeaponType _selectedType = WeaponType.sword;
   final _valueController = TextEditingController();
   List<Character> _suggestions = [];
 
@@ -27,35 +26,9 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
     final characters = await ref.read(charactersProvider.future);
 
     final candidateList = characters
-        .where((c) {
-          // Filter out characters who cannot equip shield if selected
-          if (_selectedSlot == GearSlot.shield) {
-            if (c.weapon?.hands == 2) return false;
-            // Also, dual wielders (implied by weapon type or just hands?)
-            // Spec says "filter out characters whose weapon needs 2 hands".
-            // So logic check on hands is enough.
-          }
-          return true;
-        })
+        .where((c) => c.weaponType == _selectedType) // Match weapon type
         .map((c) {
-          int currentVal = 0;
-          switch (_selectedSlot) {
-            case GearSlot.shield:
-              currentVal = c.shield?.statValue ?? 0;
-              break;
-            case GearSlot.helmet:
-              currentVal = c.helmet?.statValue ?? 0;
-              break;
-            case GearSlot.armor:
-              currentVal = c.armor?.statValue ?? 0;
-              break;
-            case GearSlot.boots:
-              currentVal = c.boots?.statValue ?? 0;
-              break;
-            case GearSlot.earrings:
-              currentVal = c.earrings?.statValue ?? 0;
-              break;
-          }
+          int currentVal = c.weapon?.statValue ?? 0;
           return MapEntry(c, currentVal);
         })
         .where((entry) => entry.value < val)
@@ -65,7 +38,7 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
     candidateList.sort((a, b) {
       final gainA = val - a.value;
       final gainB = val - b.value;
-      return gainB.compareTo(gainA); // Descending order of gain
+      return gainB.compareTo(gainA); // Descending order
     });
 
     if (mounted) {
@@ -81,9 +54,12 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
     return AlertDialog(
       title: Row(
         children: [
-          Icon(Icons.shield, color: theme.colorScheme.primary),
+          Icon(
+            Icons.colorize,
+            color: theme.colorScheme.primary,
+          ), // Sword/Weapon icon
           const SizedBox(width: 8),
-          const Text('Gear Upgrade'),
+          const Text('Weapon Upgrade'),
         ],
       ),
       content: SizedBox(
@@ -94,21 +70,26 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
             Row(
               children: [
                 Expanded(
-                  child: DropdownButtonFormField<GearSlot>(
-                    initialValue: _selectedSlot,
-                    items: GearSlot.values
+                  child: DropdownButtonFormField<WeaponType>(
+                    initialValue: _selectedType,
+                    items: WeaponType.values
                         .map(
                           (s) => DropdownMenuItem(
                             value: s,
-                            child: Text(s.name.toUpperCase()),
+                            child: Text(
+                              s.name.toUpperCase().replaceAll(
+                                'TWOHANDEDSWORD',
+                                '2H SWORD',
+                              ),
+                            ),
                           ),
                         )
                         .toList(),
                     onChanged: (v) => setState(() {
-                      _selectedSlot = v!;
+                      _selectedType = v!;
                       _calculateUpgrade();
                     }),
-                    decoration: const InputDecoration(labelText: 'Slot'),
+                    decoration: const InputDecoration(labelText: 'Type'),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -116,7 +97,7 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
                   child: TextField(
                     controller: _valueController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'New Def'),
+                    decoration: const InputDecoration(labelText: 'New Atk'),
                     onChanged: (_) => _calculateUpgrade(),
                   ),
                 ),
@@ -125,7 +106,7 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
             const SizedBox(height: 16),
             if (_valueController.text.isNotEmpty && _suggestions.isEmpty)
               const Text(
-                'No candidates found (everyone has better gear or cannot equip).',
+                'No candidates found (everyone has better weapon or different type).',
               )
             else if (_suggestions.isNotEmpty) ...[
               const Text(
@@ -139,31 +120,14 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
                   itemCount: _suggestions.length,
                   itemBuilder: (context, index) {
                     final c = _suggestions[index];
-                    int currentVal = 0;
-                    switch (_selectedSlot) {
-                      case GearSlot.shield:
-                        currentVal = c.shield?.statValue ?? 0;
-                        break;
-                      case GearSlot.helmet:
-                        currentVal = c.helmet?.statValue ?? 0;
-                        break;
-                      case GearSlot.armor:
-                        currentVal = c.armor?.statValue ?? 0;
-                        break;
-                      case GearSlot.boots:
-                        currentVal = c.boots?.statValue ?? 0;
-                        break;
-                      case GearSlot.earrings:
-                        currentVal = c.earrings?.statValue ?? 0;
-                        break;
-                    }
+                    final currentVal = c.weapon?.statValue ?? 0;
                     final gain =
                         (int.tryParse(_valueController.text) ?? 0) - currentVal;
 
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: theme.colorScheme.primary.withOpacity(
-                          0.1,
+                        backgroundColor: theme.colorScheme.primary.withValues(
+                          alpha: 0.1,
                         ),
                         child: Text(
                           c.name?.substring(0, 1) ?? '?',

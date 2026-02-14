@@ -17,33 +17,51 @@ const CharacterSchema = CollectionSchema(
   name: r'Character',
   id: 4658184409279959047,
   properties: {
-    r'armor': PropertySchema(
+    r'affection': PropertySchema(
       id: 0,
+      name: r'affection',
+      type: IsarType.long,
+    ),
+    r'armor': PropertySchema(
+      id: 1,
       name: r'armor',
       type: IsarType.object,
       target: r'Gear',
     ),
+    r'bedtimes': PropertySchema(id: 2, name: r'bedtimes', type: IsarType.long),
     r'boots': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'boots',
       type: IsarType.object,
       target: r'Gear',
     ),
+    r'earrings': PropertySchema(
+      id: 4,
+      name: r'earrings',
+      type: IsarType.object,
+      target: r'Gear',
+    ),
     r'helmet': PropertySchema(
-      id: 2,
+      id: 5,
       name: r'helmet',
       type: IsarType.object,
       target: r'Gear',
     ),
-    r'name': PropertySchema(id: 3, name: r'name', type: IsarType.string),
-    r'weapon': PropertySchema(
-      id: 4,
-      name: r'weapon',
+    r'name': PropertySchema(id: 6, name: r'name', type: IsarType.string),
+    r'shield': PropertySchema(
+      id: 7,
+      name: r'shield',
       type: IsarType.object,
       target: r'Gear',
     ),
+    r'weapon': PropertySchema(
+      id: 8,
+      name: r'weapon',
+      type: IsarType.object,
+      target: r'Weapon',
+    ),
     r'weaponType': PropertySchema(
-      id: 5,
+      id: 9,
       name: r'weaponType',
       type: IsarType.byte,
       enumMap: _CharacterweaponTypeEnumValueMap,
@@ -56,7 +74,7 @@ const CharacterSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {r'Gear': GearSchema},
+  embeddedSchemas: {r'Weapon': WeaponSchema, r'Gear': GearSchema},
   getId: _characterGetId,
   getLinks: _characterGetLinks,
   attach: _characterAttach,
@@ -84,6 +102,13 @@ int _characterEstimateSize(
     }
   }
   {
+    final value = object.earrings;
+    if (value != null) {
+      bytesCount +=
+          3 + GearSchema.estimateSize(value, allOffsets[Gear]!, allOffsets);
+    }
+  }
+  {
     final value = object.helmet;
     if (value != null) {
       bytesCount +=
@@ -97,10 +122,17 @@ int _characterEstimateSize(
     }
   }
   {
-    final value = object.weapon;
+    final value = object.shield;
     if (value != null) {
       bytesCount +=
           3 + GearSchema.estimateSize(value, allOffsets[Gear]!, allOffsets);
+    }
+  }
+  {
+    final value = object.weapon;
+    if (value != null) {
+      bytesCount +=
+          3 + WeaponSchema.estimateSize(value, allOffsets[Weapon]!, allOffsets);
     }
   }
   return bytesCount;
@@ -112,32 +144,46 @@ void _characterSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
+  writer.writeLong(offsets[0], object.affection);
   writer.writeObject<Gear>(
-    offsets[0],
+    offsets[1],
     allOffsets,
     GearSchema.serialize,
     object.armor,
   );
+  writer.writeLong(offsets[2], object.bedtimes);
   writer.writeObject<Gear>(
-    offsets[1],
+    offsets[3],
     allOffsets,
     GearSchema.serialize,
     object.boots,
   );
   writer.writeObject<Gear>(
-    offsets[2],
+    offsets[4],
+    allOffsets,
+    GearSchema.serialize,
+    object.earrings,
+  );
+  writer.writeObject<Gear>(
+    offsets[5],
     allOffsets,
     GearSchema.serialize,
     object.helmet,
   );
-  writer.writeString(offsets[3], object.name);
+  writer.writeString(offsets[6], object.name);
   writer.writeObject<Gear>(
-    offsets[4],
+    offsets[7],
     allOffsets,
     GearSchema.serialize,
+    object.shield,
+  );
+  writer.writeObject<Weapon>(
+    offsets[8],
+    allOffsets,
+    WeaponSchema.serialize,
     object.weapon,
   );
-  writer.writeByte(offsets[5], object.weaponType.index);
+  writer.writeByte(offsets[9], object.weaponType.index);
 }
 
 Character _characterDeserialize(
@@ -147,30 +193,42 @@ Character _characterDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Character();
+  object.affection = reader.readLong(offsets[0]);
   object.armor = reader.readObjectOrNull<Gear>(
-    offsets[0],
-    GearSchema.deserialize,
-    allOffsets,
-  );
-  object.boots = reader.readObjectOrNull<Gear>(
     offsets[1],
     GearSchema.deserialize,
     allOffsets,
   );
-  object.helmet = reader.readObjectOrNull<Gear>(
-    offsets[2],
+  object.bedtimes = reader.readLong(offsets[2]);
+  object.boots = reader.readObjectOrNull<Gear>(
+    offsets[3],
     GearSchema.deserialize,
     allOffsets,
   );
-  object.id = id;
-  object.name = reader.readStringOrNull(offsets[3]);
-  object.weapon = reader.readObjectOrNull<Gear>(
+  object.earrings = reader.readObjectOrNull<Gear>(
     offsets[4],
     GearSchema.deserialize,
     allOffsets,
   );
+  object.helmet = reader.readObjectOrNull<Gear>(
+    offsets[5],
+    GearSchema.deserialize,
+    allOffsets,
+  );
+  object.id = id;
+  object.name = reader.readStringOrNull(offsets[6]);
+  object.shield = reader.readObjectOrNull<Gear>(
+    offsets[7],
+    GearSchema.deserialize,
+    allOffsets,
+  );
+  object.weapon = reader.readObjectOrNull<Weapon>(
+    offsets[8],
+    WeaponSchema.deserialize,
+    allOffsets,
+  );
   object.weaponType =
-      _CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offsets[5])] ??
+      _CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offsets[9])] ??
       WeaponType.sword;
   return object;
 }
@@ -183,12 +241,7 @@ P _characterDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ))
-          as P;
+      return (reader.readLong(offset)) as P;
     case 1:
       return (reader.readObjectOrNull<Gear>(
             offset,
@@ -197,14 +250,14 @@ P _characterDeserializeProp<P>(
           ))
           as P;
     case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
       return (reader.readObjectOrNull<Gear>(
             offset,
             GearSchema.deserialize,
             allOffsets,
           ))
           as P;
-    case 3:
-      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readObjectOrNull<Gear>(
             offset,
@@ -213,6 +266,29 @@ P _characterDeserializeProp<P>(
           ))
           as P;
     case 5:
+      return (reader.readObjectOrNull<Gear>(
+            offset,
+            GearSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
+      return (reader.readObjectOrNull<Gear>(
+            offset,
+            GearSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
+    case 8:
+      return (reader.readObjectOrNull<Weapon>(
+            offset,
+            WeaponSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
+    case 9:
       return (_CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offset)] ??
               WeaponType.sword)
           as P;
@@ -231,7 +307,6 @@ const _CharacterweaponTypeEnumValueMap = {
   'katana': 6,
   'twoHandedSword': 7,
   'spear': 8,
-  'shield': 9,
 };
 const _CharacterweaponTypeValueEnumMap = {
   0: WeaponType.sword,
@@ -243,7 +318,6 @@ const _CharacterweaponTypeValueEnumMap = {
   6: WeaponType.katana,
   7: WeaponType.twoHandedSword,
   8: WeaponType.spear,
-  9: WeaponType.shield,
 };
 
 Id _characterGetId(Character object) {
@@ -340,6 +414,63 @@ extension CharacterQueryWhere
 
 extension CharacterQueryFilter
     on QueryBuilder<Character, Character, QFilterCondition> {
+  QueryBuilder<Character, Character, QAfterFilterCondition> affectionEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'affection', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  affectionGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'affection',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> affectionLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'affection',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> affectionBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'affection',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<Character, Character, QAfterFilterCondition> armorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -356,6 +487,65 @@ extension CharacterQueryFilter
     });
   }
 
+  QueryBuilder<Character, Character, QAfterFilterCondition> bedtimesEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'bedtimes', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> bedtimesGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'bedtimes',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> bedtimesLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'bedtimes',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> bedtimesBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'bedtimes',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<Character, Character, QAfterFilterCondition> bootsIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -368,6 +558,23 @@ extension CharacterQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const FilterCondition.isNotNull(property: r'boots'),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> earringsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'earrings'),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  earringsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'earrings'),
       );
     });
   }
@@ -609,6 +816,22 @@ extension CharacterQueryFilter
     });
   }
 
+  QueryBuilder<Character, Character, QAfterFilterCondition> shieldIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'shield'),
+      );
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> shieldIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'shield'),
+      );
+    });
+  }
+
   QueryBuilder<Character, Character, QAfterFilterCondition> weaponIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -701,6 +924,14 @@ extension CharacterQueryObject
     });
   }
 
+  QueryBuilder<Character, Character, QAfterFilterCondition> earrings(
+    FilterQuery<Gear> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'earrings');
+    });
+  }
+
   QueryBuilder<Character, Character, QAfterFilterCondition> helmet(
     FilterQuery<Gear> q,
   ) {
@@ -709,8 +940,16 @@ extension CharacterQueryObject
     });
   }
 
-  QueryBuilder<Character, Character, QAfterFilterCondition> weapon(
+  QueryBuilder<Character, Character, QAfterFilterCondition> shield(
     FilterQuery<Gear> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'shield');
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition> weapon(
+    FilterQuery<Weapon> q,
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'weapon');
@@ -722,6 +961,30 @@ extension CharacterQueryLinks
     on QueryBuilder<Character, Character, QFilterCondition> {}
 
 extension CharacterQuerySortBy on QueryBuilder<Character, Character, QSortBy> {
+  QueryBuilder<Character, Character, QAfterSortBy> sortByAffection() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'affection', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy> sortByAffectionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'affection', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy> sortByBedtimes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bedtimes', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy> sortByBedtimesDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bedtimes', Sort.desc);
+    });
+  }
+
   QueryBuilder<Character, Character, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -749,6 +1012,30 @@ extension CharacterQuerySortBy on QueryBuilder<Character, Character, QSortBy> {
 
 extension CharacterQuerySortThenBy
     on QueryBuilder<Character, Character, QSortThenBy> {
+  QueryBuilder<Character, Character, QAfterSortBy> thenByAffection() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'affection', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy> thenByAffectionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'affection', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy> thenByBedtimes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bedtimes', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy> thenByBedtimesDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bedtimes', Sort.desc);
+    });
+  }
+
   QueryBuilder<Character, Character, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -788,6 +1075,18 @@ extension CharacterQuerySortThenBy
 
 extension CharacterQueryWhereDistinct
     on QueryBuilder<Character, Character, QDistinct> {
+  QueryBuilder<Character, Character, QDistinct> distinctByAffection() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'affection');
+    });
+  }
+
+  QueryBuilder<Character, Character, QDistinct> distinctByBedtimes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'bedtimes');
+    });
+  }
+
   QueryBuilder<Character, Character, QDistinct> distinctByName({
     bool caseSensitive = true,
   }) {
@@ -811,15 +1110,33 @@ extension CharacterQueryProperty
     });
   }
 
+  QueryBuilder<Character, int, QQueryOperations> affectionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'affection');
+    });
+  }
+
   QueryBuilder<Character, Gear?, QQueryOperations> armorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'armor');
     });
   }
 
+  QueryBuilder<Character, int, QQueryOperations> bedtimesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'bedtimes');
+    });
+  }
+
   QueryBuilder<Character, Gear?, QQueryOperations> bootsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'boots');
+    });
+  }
+
+  QueryBuilder<Character, Gear?, QQueryOperations> earringsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'earrings');
     });
   }
 
@@ -835,7 +1152,13 @@ extension CharacterQueryProperty
     });
   }
 
-  QueryBuilder<Character, Gear?, QQueryOperations> weaponProperty() {
+  QueryBuilder<Character, Gear?, QQueryOperations> shieldProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'shield');
+    });
+  }
+
+  QueryBuilder<Character, Weapon?, QQueryOperations> weaponProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'weapon');
     });
@@ -847,3 +1170,371 @@ extension CharacterQueryProperty
     });
   }
 }
+
+// **************************************************************************
+// IsarEmbeddedGenerator
+// **************************************************************************
+
+// coverage:ignore-file
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
+
+const WeaponSchema = Schema(
+  name: r'Weapon',
+  id: -7996961866191931403,
+  properties: {
+    r'extraStats': PropertySchema(
+      id: 0,
+      name: r'extraStats',
+      type: IsarType.string,
+    ),
+    r'hands': PropertySchema(id: 1, name: r'hands', type: IsarType.long),
+    r'statValue': PropertySchema(
+      id: 2,
+      name: r'statValue',
+      type: IsarType.long,
+    ),
+  },
+  estimateSize: _weaponEstimateSize,
+  serialize: _weaponSerialize,
+  deserialize: _weaponDeserialize,
+  deserializeProp: _weaponDeserializeProp,
+);
+
+int _weaponEstimateSize(
+  Weapon object,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  var bytesCount = offsets.last;
+  {
+    final value = object.extraStats;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  return bytesCount;
+}
+
+void _weaponSerialize(
+  Weapon object,
+  IsarWriter writer,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  writer.writeString(offsets[0], object.extraStats);
+  writer.writeLong(offsets[1], object.hands);
+  writer.writeLong(offsets[2], object.statValue);
+}
+
+Weapon _weaponDeserialize(
+  Id id,
+  IsarReader reader,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  final object = Weapon();
+  object.extraStats = reader.readStringOrNull(offsets[0]);
+  object.hands = reader.readLong(offsets[1]);
+  object.statValue = reader.readLong(offsets[2]);
+  return object;
+}
+
+P _weaponDeserializeProp<P>(
+  IsarReader reader,
+  int propertyId,
+  int offset,
+  Map<Type, List<int>> allOffsets,
+) {
+  switch (propertyId) {
+    case 0:
+      return (reader.readStringOrNull(offset)) as P;
+    case 1:
+      return (reader.readLong(offset)) as P;
+    case 2:
+      return (reader.readLong(offset)) as P;
+    default:
+      throw IsarError('Unknown property with id $propertyId');
+  }
+}
+
+extension WeaponQueryFilter on QueryBuilder<Weapon, Weapon, QFilterCondition> {
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'extraStats'),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'extraStats'),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'extraStats',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'extraStats',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'extraStats',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'extraStats',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'extraStats',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'extraStats',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'extraStats',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'extraStats',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'extraStats', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> extraStatsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'extraStats', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> handsEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'hands', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> handsGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'hands',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> handsLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'hands',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> handsBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'hands',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> statValueEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'statValue', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> statValueGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'statValue',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> statValueLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'statValue',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Weapon, Weapon, QAfterFilterCondition> statValueBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'statValue',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+}
+
+extension WeaponQueryObject on QueryBuilder<Weapon, Weapon, QFilterCondition> {}

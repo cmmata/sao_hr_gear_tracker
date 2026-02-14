@@ -22,12 +22,8 @@ class CharacterController extends _$CharacterController {
   @override
   FutureOr<void> build() {}
 
-  Future<void> addCharacter(String name, WeaponType weaponType) async {
+  Future<void> addCharacter(Character character) async {
     final isar = await ref.read(isarProvider.future);
-    final character = Character()
-      ..name = name
-      ..weaponType = weaponType;
-
     await isar.writeTxn(() async {
       await isar.characters.put(character);
     });

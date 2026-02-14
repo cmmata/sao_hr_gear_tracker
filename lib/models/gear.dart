@@ -4,9 +4,7 @@ part 'gear.g.dart';
 
 @embedded
 class Gear {
-  String? name;
-
-  /// Attack for weapons, Defense for armor parts
+  /// Defense value
   int statValue = 0;
 
   String? extraStats;

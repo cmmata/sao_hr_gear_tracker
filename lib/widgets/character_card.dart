@@ -16,6 +16,30 @@ class CharacterCard extends StatelessWidget {
     this.highlighted = false,
   });
 
+  String _getWeaponIconPath(WeaponType type) {
+    const basePath = 'assets/icons';
+    switch (type) {
+      case WeaponType.sword:
+        return '$basePath/sword.png';
+      case WeaponType.rapier:
+        return '$basePath/rapier.png';
+      case WeaponType.dagger:
+        return '$basePath/dagger.png';
+      case WeaponType.mace:
+        return '$basePath/mace.png';
+      case WeaponType.axe:
+        return '$basePath/axe.png';
+      case WeaponType.scimitar:
+        return '$basePath/scimitar.png';
+      case WeaponType.katana:
+        return '$basePath/katana.png';
+      case WeaponType.twoHandedSword:
+        return '$basePath/two_handed_sword.png';
+      case WeaponType.spear:
+        return '$basePath/spear.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -50,12 +74,11 @@ class CharacterCard extends StatelessWidget {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    character.weaponType.name.substring(0, 1).toUpperCase(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
-                    ),
+                  child: Image.asset(
+                    _getWeaponIconPath(character.weaponType),
+                    width: 32,
+                    height: 32,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ),
