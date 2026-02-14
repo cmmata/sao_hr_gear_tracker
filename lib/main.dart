@@ -23,8 +23,14 @@ class SaoGearTrackerApp extends ConsumerWidget {
       theme: AppTheme.theme,
       home: isarAsync.when(
         data: (isar) => const MainScaffold(),
-        error: (err, stack) =>
-            Scaffold(body: Center(child: Text('Error: $err'))),
+        error: (err, stack) {
+          debugPrint('Error initializing Isar: $err');
+          return const Scaffold(
+            body: Center(
+              child: Text('An error occurred while initializing the database.'),
+            ),
+          );
+        },
         loading: () =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
