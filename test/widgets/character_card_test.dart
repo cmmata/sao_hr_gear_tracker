@@ -48,7 +48,7 @@ void main() {
         ),
       );
 
-      await tester.tap(find.byType(InkWell));
+      await tester.tap(find.byType(InkWell).first);
       expect(tapped, isTrue);
     });
 

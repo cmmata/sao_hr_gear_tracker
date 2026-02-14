@@ -6,173 +6,164 @@ part of 'character_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$charactersHash() => r'ab448c538426087a9dc86aaf5736d821e59934d6';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [characters].
 @ProviderFor(characters)
-final charactersProvider = AutoDisposeStreamProvider<List<Character>>.internal(
-  characters,
-  name: r'charactersProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$charactersHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const charactersProvider = CharactersProvider._();
 
-typedef CharactersRef = AutoDisposeStreamProviderRef<List<Character>>;
-String _$characterHash() => r'535d77c10c1b83de1264fe1246c5183485f62d7b';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [character].
-@ProviderFor(character)
-const characterProvider = CharacterFamily();
-
-/// See also [character].
-class CharacterFamily extends Family<AsyncValue<Character?>> {
-  /// See also [character].
-  const CharacterFamily();
-
-  /// See also [character].
-  CharacterProvider call(int id) {
-    return CharacterProvider(id);
-  }
-
-  @override
-  CharacterProvider getProviderOverride(covariant CharacterProvider provider) {
-    return call(provider.id);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'characterProvider';
-}
-
-/// See also [character].
-class CharacterProvider extends AutoDisposeStreamProvider<Character?> {
-  /// See also [character].
-  CharacterProvider(int id)
-    : this._internal(
-        (ref) => character(ref as CharacterRef, id),
-        from: characterProvider,
-        name: r'characterProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$characterHash,
-        dependencies: CharacterFamily._dependencies,
-        allTransitiveDependencies: CharacterFamily._allTransitiveDependencies,
-        id: id,
+final class CharactersProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Character>>,
+          List<Character>,
+          Stream<List<Character>>
+        >
+    with $FutureModifier<List<Character>>, $StreamProvider<List<Character>> {
+  const CharactersProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'charactersProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  CharacterProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.id,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$charactersHash();
 
-  final int id;
+  @$internal
+  @override
+  $StreamProviderElement<List<Character>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    Stream<Character?> Function(CharacterRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: CharacterProvider._internal(
-        (ref) => create(ref as CharacterRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        id: id,
-      ),
-    );
+  Stream<List<Character>> create(Ref ref) {
+    return characters(ref);
+  }
+}
+
+String _$charactersHash() => r'ab448c538426087a9dc86aaf5736d821e59934d6';
+
+@ProviderFor(character)
+const characterProvider = CharacterFamily._();
+
+final class CharacterProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Character?>,
+          Character?,
+          Stream<Character?>
+        >
+    with $FutureModifier<Character?>, $StreamProvider<Character?> {
+  const CharacterProvider._({
+    required CharacterFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'characterProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$characterHash();
+
+  @override
+  String toString() {
+    return r'characterProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  AutoDisposeStreamProviderElement<Character?> createElement() {
-    return _CharacterProviderElement(this);
+  $StreamProviderElement<Character?> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Character?> create(Ref ref) {
+    final argument = this.argument as int;
+    return character(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CharacterProvider && other.id == id;
+    return other is CharacterProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-mixin CharacterRef on AutoDisposeStreamProviderRef<Character?> {
-  /// The parameter `id` of this provider.
-  int get id;
-}
+String _$characterHash() => r'535d77c10c1b83de1264fe1246c5183485f62d7b';
 
-class _CharacterProviderElement
-    extends AutoDisposeStreamProviderElement<Character?>
-    with CharacterRef {
-  _CharacterProviderElement(super.provider);
+final class CharacterFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<Character?>, int> {
+  const CharacterFamily._()
+    : super(
+        retry: null,
+        name: r'characterProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  CharacterProvider call(int id) =>
+      CharacterProvider._(argument: id, from: this);
 
   @override
-  int get id => (origin as CharacterProvider).id;
+  String toString() => r'characterProvider';
+}
+
+@ProviderFor(CharacterController)
+const characterControllerProvider = CharacterControllerProvider._();
+
+final class CharacterControllerProvider
+    extends $AsyncNotifierProvider<CharacterController, void> {
+  const CharacterControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'characterControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$characterControllerHash();
+
+  @$internal
+  @override
+  CharacterController create() => CharacterController();
 }
 
 String _$characterControllerHash() =>
-    r'aeb626e4adb45f8239670087dd81b6c854507e52';
+    r'c31604e4c7c384fd6e65a75f0d443d860d9863e9';
 
-/// See also [CharacterController].
-@ProviderFor(CharacterController)
-final characterControllerProvider =
-    AutoDisposeAsyncNotifierProvider<CharacterController, void>.internal(
-      CharacterController.new,
-      name: r'characterControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$characterControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$CharacterController = AutoDisposeAsyncNotifier<void>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+abstract class _$CharacterController extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    build();
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, null);
+  }
+}
