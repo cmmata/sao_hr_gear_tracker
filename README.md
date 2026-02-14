@@ -1,6 +1,8 @@
 # Note & disclaimer
 This project is an experiment of a vibe coded app using Antigravity. It's probably full of bugs and bad mobile architecture or patterns. Use it at your own risk.
 
+It's not affiliated with Bandai Namco or Sword Art Online in any way. I'm just playing the game, and I wanted an app to track my friends' gear.
+
 # ⚔️ SAO:HR Gear Commander
 
 > "This may be a game, but it’s not something you play." — Akihiko Kayaba

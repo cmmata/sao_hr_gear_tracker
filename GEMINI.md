@@ -12,6 +12,14 @@ This file serves as a memory aid for the AI assistant (Gemini/Antigravity) worki
 - Project scaffolding in progress.
 - Requirements defined in `specs/requirements.md`.
 
+## Requirements Policy
+- **Source of Truth**: All requirements are strictly defined in `specs/*.md`.
+- **Workflow**:
+  1. Read `specs/requirements.md` (and other spec files) before implementation.
+  2. Implement features exactly as specified.
+  3. Update specs if requirements change during development (with user approval).
+- **Compliance**: Deviation from specs is not allowed without explicit user override.
+
 ## Key Commands
 - `$HOME$/lib/flutterSDK/bin/flutter run`: Run the app.
 - `$HOME$/lib/flutterSDK/bin/dart run build_runner build`: Generate code for Isar/Riverpod.
