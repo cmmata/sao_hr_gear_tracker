@@ -120,11 +120,11 @@ class _GearColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gear = [
-      ('Shield', player.shield),
-      ('Helmet', player.helmet),
-      ('Armor', player.armor),
-      ('Boots', player.boots),
-      ('Earrings', player.earrings),
+      (GearSlot.shield, player.shield, 'Shield'),
+      (GearSlot.helmet, player.helmet, 'Helmet'),
+      (GearSlot.armor, player.armor, 'Armor'),
+      (GearSlot.boots, player.boots, 'Boots'),
+      (GearSlot.earrings, player.earrings, 'Earrings'),
     ];
 
     int totalDefense = 0;
@@ -148,9 +148,10 @@ class _GearColumn extends StatelessWidget {
               final item = gear[index];
               final slot = item.$1;
               final g = item.$2;
+              final name = item.$3;
 
               return ListTile(
-                title: Text(slot),
+                title: Text(name),
                 trailing: Text('${g?.statValue ?? 0}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 onTap: () => _showEditGearDialog(context, slot, g),
               );
@@ -172,7 +173,7 @@ class _GearColumn extends StatelessWidget {
     );
   }
 
-  void _showEditGearDialog(BuildContext context, String slot, Gear? currentGear) {
+  void _showEditGearDialog(BuildContext context, GearSlot slot, Gear? currentGear) {
     showDialog(
       context: context,
       builder: (context) => _EditGearDialog(slot: slot, currentGear: currentGear),
@@ -251,7 +252,7 @@ class _EditWeaponDialogState extends ConsumerState<_EditWeaponDialog> {
 }
 
 class _EditGearDialog extends ConsumerStatefulWidget {
-  final String slot;
+  final GearSlot slot;
   final Gear? currentGear;
 
   const _EditGearDialog({required this.slot, required this.currentGear});
@@ -281,7 +282,7 @@ class _EditGearDialogState extends ConsumerState<_EditGearDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Edit ${widget.slot}'),
+      title: Text('Edit ${widget.slot.name.toUpperCase()}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

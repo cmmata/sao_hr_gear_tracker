@@ -26,3 +26,11 @@ class Player {
   Gear? boots;
   Gear? earrings;
 }
+
+enum GearSlot {
+  shield,
+  helmet,
+  armor,
+  boots,
+  earrings,
+}

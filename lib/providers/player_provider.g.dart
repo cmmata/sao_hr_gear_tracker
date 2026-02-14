@@ -20,7 +20,7 @@ final playerProvider = AutoDisposeStreamProvider<Player?>.internal(
 );
 
 typedef PlayerRef = AutoDisposeStreamProviderRef<Player?>;
-String _$playerControllerHash() => r'933b259b66a206be2329ec9b27b4e8818d7bf72f';
+String _$playerControllerHash() => r'59d30e85626fc915a1acb10397aff7d75cc92991';
 
 /// See also [PlayerController].
 @ProviderFor(PlayerController)

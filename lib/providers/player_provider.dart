@@ -85,31 +85,26 @@ class PlayerController extends _$PlayerController {
     });
   }
 
-  Future<void> updateGear(String slot, Gear gear) async {
+  Future<void> updateGear(GearSlot slot, Gear gear) async {
     final isar = await ref.read(isarProvider.future);
     final player = await isar.players.where().findFirst();
     if (player == null) return;
 
     await isar.writeTxn(() async {
       switch (slot) {
-        case 'Shield':
-        case 'shield':
+        case GearSlot.shield:
           player.shield = gear;
           break;
-        case 'Helmet':
-        case 'helmet':
+        case GearSlot.helmet:
           player.helmet = gear;
           break;
-        case 'Armor':
-        case 'armor':
+        case GearSlot.armor:
           player.armor = gear;
           break;
-        case 'Boots':
-        case 'boots':
+        case GearSlot.boots:
           player.boots = gear;
           break;
-        case 'Earrings':
-        case 'earrings':
+        case GearSlot.earrings:
           player.earrings = gear;
           break;
       }
