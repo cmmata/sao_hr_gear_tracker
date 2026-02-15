@@ -49,20 +49,21 @@ class Player {
   factory Player.fromMap(Map<String, dynamic> map) {
     return Player()
       ..id = map['id'] as int? ?? 0
-      ..sword = Weapon.fromMap(map['sword'] as Map<String, dynamic>)
-      ..rapier = Weapon.fromMap(map['rapier'] as Map<String, dynamic>)
-      ..dagger = Weapon.fromMap(map['dagger'] as Map<String, dynamic>)
-      ..mace = Weapon.fromMap(map['mace'] as Map<String, dynamic>)
-      ..axe = Weapon.fromMap(map['axe'] as Map<String, dynamic>)
-      ..scimitar = Weapon.fromMap(map['scimitar'] as Map<String, dynamic>)
-      ..katana = Weapon.fromMap(map['katana'] as Map<String, dynamic>)
-      ..twoHandedSword =
-          Weapon.fromMap(map['twoHandedSword'] as Map<String, dynamic>)
-      ..spear = Weapon.fromMap(map['spear'] as Map<String, dynamic>)
-      ..shield = Gear.fromMap(map['shield'] as Map<String, dynamic>)
-      ..helmet = Gear.fromMap(map['helmet'] as Map<String, dynamic>)
-      ..armor = Gear.fromMap(map['armor'] as Map<String, dynamic>)
-      ..boots = Gear.fromMap(map['boots'] as Map<String, dynamic>)
-      ..earrings = Gear.fromMap(map['earrings'] as Map<String, dynamic>);
+      ..sword = Weapon.fromMap(map['sword'] as Map<String, dynamic>? ?? {})
+      ..rapier = Weapon.fromMap(map['rapier'] as Map<String, dynamic>? ?? {})
+      ..dagger = Weapon.fromMap(map['dagger'] as Map<String, dynamic>? ?? {})
+      ..mace = Weapon.fromMap(map['mace'] as Map<String, dynamic>? ?? {})
+      ..axe = Weapon.fromMap(map['axe'] as Map<String, dynamic>? ?? {})
+      ..scimitar = Weapon.fromMap(map['scimitar'] as Map<String, dynamic>? ?? {})
+      ..katana = Weapon.fromMap(map['katana'] as Map<String, dynamic>? ?? {})
+      ..twoHandedSword = Weapon.fromMap(
+        map['twoHandedSword'] as Map<String, dynamic>? ?? {},
+      )
+      ..spear = Weapon.fromMap(map['spear'] as Map<String, dynamic>? ?? {})
+      ..shield = Gear.fromMap(map['shield'] as Map<String, dynamic>? ?? {})
+      ..helmet = Gear.fromMap(map['helmet'] as Map<String, dynamic>? ?? {})
+      ..armor = Gear.fromMap(map['armor'] as Map<String, dynamic>? ?? {})
+      ..boots = Gear.fromMap(map['boots'] as Map<String, dynamic>? ?? {})
+      ..earrings = Gear.fromMap(map['earrings'] as Map<String, dynamic>? ?? {});
   }
 }

@@ -64,5 +64,19 @@ void main() {
       expect(fromMap.sword.statValue, 200);
       expect(fromMap.shield.statValue, 80);
     });
+
+    test('Player fromMap with missing keys handles defaults', () {
+      final map = {
+        'id': 0,
+        'sword': {'statValue': 50},
+        // other keys missing
+      };
+      final fromMap = Player.fromMap(map);
+
+      expect(fromMap.id, 0);
+      expect(fromMap.sword.statValue, 50);
+      expect(fromMap.rapier.statValue, 0); // Default
+      expect(fromMap.shield.statValue, 0); // Default
+    });
   });
 }

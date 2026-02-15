@@ -48,7 +48,7 @@ class DataNotifier extends _$DataNotifier {
     final jsonString = await file.readAsString();
     final data = jsonDecode(jsonString) as Map<String, dynamic>;
 
-    if (data['characters'] is! List || data['players'] is! List) {
+    if (!data.containsKey('characters') || !data.containsKey('players')) {
       return false;
     }
 
