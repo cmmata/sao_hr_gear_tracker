@@ -25,7 +25,7 @@
   - **Helmet**
   - **Armor**
   - **Boots**
-  - **Earrings**
+  - **Earrings** (Only for Own Equipment)
 - **Properties**:
   - **Stat Value**: Integer (Defense)
   - **Extra Stats**: String (Free text for bonuses like STR+10, VIT+5).
@@ -50,12 +50,12 @@
 ### 3.1.1. Add/Edit Character
 - **MUST** allow creating a new character with Name and Weapon Type. The weapon type should be a dropdown with the weapon types, but with a friendly name, not a code.
 - **MUST** allow editing an existing character's Name and Weapon Type.
-- **MUST** allow editing the weapon and gear in each slot (Shield, Helmet, Armor, Boots, Earrings). Both sections (weapon and gear) should be separated.
+- **MUST** allow editing the weapon and gear in each slot (Shield, Helmet, Armor, Boots). Both sections (weapon and gear) should be separated.
 
 ### 3.1.2. Upgrade Gear Picker (Core Feature)
 - **Goal**: Identify the best candidate for a specific piece of new gear.
 - **Input**:
-  - **Slot Selector**: Dropdown to choose (Weapon, Shield, Helmet, Armor, Boots, Earrings).
+  - **Slot Selector**: Dropdown to choose (Weapon, Shield, Helmet, Armor, Boots).
   - **Stat Value Input**: Number field for the new gear's Deffense stat.
 - **Icon**: The icon should be a small shield icon.
 - **Action**:

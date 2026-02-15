@@ -37,37 +37,30 @@ const CharacterSchema = CollectionSchema(
 
       target: r'Gear',
     ),
-    r'earrings': PropertySchema(
-      id: 4,
-      name: r'earrings',
-      type: IsarType.object,
-
-      target: r'Gear',
-    ),
     r'helmet': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'helmet',
       type: IsarType.object,
 
       target: r'Gear',
     ),
-    r'name': PropertySchema(id: 6, name: r'name', type: IsarType.string),
+    r'name': PropertySchema(id: 5, name: r'name', type: IsarType.string),
     r'shield': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'shield',
       type: IsarType.object,
 
       target: r'Gear',
     ),
     r'weapon': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'weapon',
       type: IsarType.object,
 
       target: r'Weapon',
     ),
     r'weaponType': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'weaponType',
       type: IsarType.byte,
       enumMap: _CharacterweaponTypeEnumValueMap,
@@ -118,13 +111,6 @@ int _characterEstimateSize(
   }
   {
     final value = object.boots;
-    if (value != null) {
-      bytesCount +=
-          3 + GearSchema.estimateSize(value, allOffsets[Gear]!, allOffsets);
-    }
-  }
-  {
-    final value = object.earrings;
     if (value != null) {
       bytesCount +=
           3 + GearSchema.estimateSize(value, allOffsets[Gear]!, allOffsets);
@@ -184,28 +170,22 @@ void _characterSerialize(
     offsets[4],
     allOffsets,
     GearSchema.serialize,
-    object.earrings,
-  );
-  writer.writeObject<Gear>(
-    offsets[5],
-    allOffsets,
-    GearSchema.serialize,
     object.helmet,
   );
-  writer.writeString(offsets[6], object.name);
+  writer.writeString(offsets[5], object.name);
   writer.writeObject<Gear>(
-    offsets[7],
+    offsets[6],
     allOffsets,
     GearSchema.serialize,
     object.shield,
   );
   writer.writeObject<Weapon>(
-    offsets[8],
+    offsets[7],
     allOffsets,
     WeaponSchema.serialize,
     object.weapon,
   );
-  writer.writeByte(offsets[9], object.weaponType.index);
+  writer.writeByte(offsets[8], object.weaponType.index);
 }
 
 Character _characterDeserialize(
@@ -227,30 +207,25 @@ Character _characterDeserialize(
     GearSchema.deserialize,
     allOffsets,
   );
-  object.earrings = reader.readObjectOrNull<Gear>(
+  object.helmet = reader.readObjectOrNull<Gear>(
     offsets[4],
     GearSchema.deserialize,
     allOffsets,
   );
-  object.helmet = reader.readObjectOrNull<Gear>(
-    offsets[5],
-    GearSchema.deserialize,
-    allOffsets,
-  );
   object.id = id;
-  object.name = reader.readStringOrNull(offsets[6]);
+  object.name = reader.readStringOrNull(offsets[5]);
   object.shield = reader.readObjectOrNull<Gear>(
-    offsets[7],
+    offsets[6],
     GearSchema.deserialize,
     allOffsets,
   );
   object.weapon = reader.readObjectOrNull<Weapon>(
-    offsets[8],
+    offsets[7],
     WeaponSchema.deserialize,
     allOffsets,
   );
   object.weaponType =
-      _CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offsets[9])] ??
+      _CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offsets[8])] ??
       WeaponType.sword;
   return object;
 }
@@ -288,29 +263,22 @@ P _characterDeserializeProp<P>(
           ))
           as P;
     case 5:
-      return (reader.readObjectOrNull<Gear>(
-            offset,
-            GearSchema.deserialize,
-            allOffsets,
-          ))
-          as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
-    case 7:
+    case 6:
       return (reader.readObjectOrNull<Gear>(
             offset,
             GearSchema.deserialize,
             allOffsets,
           ))
           as P;
-    case 8:
+    case 7:
       return (reader.readObjectOrNull<Weapon>(
             offset,
             WeaponSchema.deserialize,
             allOffsets,
           ))
           as P;
-    case 9:
+    case 8:
       return (_CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offset)] ??
               WeaponType.sword)
           as P;
@@ -655,23 +623,6 @@ extension CharacterQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const FilterCondition.isNotNull(property: r'boots'),
-      );
-    });
-  }
-
-  QueryBuilder<Character, Character, QAfterFilterCondition> earringsIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'earrings'),
-      );
-    });
-  }
-
-  QueryBuilder<Character, Character, QAfterFilterCondition>
-  earringsIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'earrings'),
       );
     });
   }
@@ -1021,14 +972,6 @@ extension CharacterQueryObject
     });
   }
 
-  QueryBuilder<Character, Character, QAfterFilterCondition> earrings(
-    FilterQuery<Gear> q,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'earrings');
-    });
-  }
-
   QueryBuilder<Character, Character, QAfterFilterCondition> helmet(
     FilterQuery<Gear> q,
   ) {
@@ -1228,12 +1171,6 @@ extension CharacterQueryProperty
   QueryBuilder<Character, Gear?, QQueryOperations> bootsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'boots');
-    });
-  }
-
-  QueryBuilder<Character, Gear?, QQueryOperations> earringsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'earrings');
     });
   }
 

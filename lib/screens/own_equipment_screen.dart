@@ -356,37 +356,85 @@ class _StatEditDialogState extends State<StatEditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _statController,
-            decoration: InputDecoration(labelText: widget.labelValue),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: _extraController,
-            decoration: const InputDecoration(labelText: 'Extra Stats (e.g. STR+10)'),
-          ),
-        ],
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _statController,
+              decoration: InputDecoration(
+                labelText: widget.labelValue,
+                border: const OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _extraController,
+              decoration: const InputDecoration(
+                labelText: 'Extra Stats (e.g. STR+10)',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // OK Button (Blue Circle with Check)
+                InkWell(
+                  onTap: () {
+                    final newValue = int.tryParse(_statController.text) ?? 0;
+                    final newExtra = _extraController.text;
+                    widget.onSave(newValue, newExtra);
+                    Navigator.pop(context);
+                  },
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.blue, width: 4),
+                    ),
+                    child: const Icon(Icons.check, color: Colors.blue, size: 40),
+                  ),
+                ),
+                // Cancel Button (Red Circle with Cross)
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.red, width: 4),
+                    ),
+                    child: const Icon(Icons.close, color: Colors.red, size: 40),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            final newValue = int.tryParse(_statController.text) ?? 0;
-            final newExtra = _extraController.text;
-            widget.onSave(newValue, newExtra);
-            Navigator.pop(context);
-          },
-          child: const Text('Save'),
-        ),
-      ],
     );
   }
 }
