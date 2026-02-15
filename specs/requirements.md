@@ -35,7 +35,7 @@
 ## 3.0 Tabs
 - **MUST** have a tab bar with the following tabs:
   - **Characters**: List of all tracked characters. The tab icon should be a group of characters.
-  - **Own equipment**: List of all equipment the user has. The tab icon should be a bag.
+  - **Own equipment**: List of all equipment the user has. The tab icon should be a person icon.
   - **Settings**: Settings for the app. The tab icon should be a gear.
 
 ### 3.1. Main Screen and tab (Character List)
