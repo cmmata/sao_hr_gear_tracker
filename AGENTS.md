@@ -7,6 +7,6 @@ Before starting any task, you **MUST** read the following files to understand th
 
 ## Implementation Guidelines
 - Follow the requirements in `specs/requirements.md` strictly.
-- If a user's request contradicts the specs, prioritize the user's request but also update the specs to maintain consistency.
+- If a user's request contradicts the specs, flag the discrepancy for review. Once confirmed, implement the request and update the specs to maintain consistency.
 - Maintain the "Aincrad" aesthetic (SAO style) as described in the requirements.
 - Use Isar for local storage and Riverpod for state management.
