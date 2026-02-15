@@ -361,7 +361,7 @@ class _StatEditDialogState extends State<StatEditDialog> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.8),
+          color: Colors.white.withOpacity(0.8),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Theme.of(context).primaryColor, width: 2),
         ),
