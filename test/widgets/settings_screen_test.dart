@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sao_gear_tracker/screens/settings_screen.dart';
-import 'package:sao_gear_tracker/providers/data_provider.dart';
 
 void main() {
   testWidgets('SettingsScreen shows import confirmation dialog with custom style', (WidgetTester tester) async {
@@ -25,8 +24,6 @@ void main() {
     expect(find.textContaining('Importing data will overwrite'), findsOneWidget);
 
     // Verify custom buttons (InkWells with specific child icons/containers)
-    // Blue Circle OK button
-    final okButton = find.byType(InkWell).first;
     // Red Cross Cancel button
     final cancelButton = find.byIcon(Icons.close);
 
