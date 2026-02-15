@@ -32,7 +32,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         type: BottomNavigationBarType.fixed,
         items: [
           _buildNavItem(Icons.group, 'Characters', _currentIndex == 0),
-          _buildNavItem(Icons.shopping_bag, 'Equipment', _currentIndex == 1),
+          _buildNavItem(Icons.person, 'Equipment', _currentIndex == 1),
           _buildNavItem(Icons.settings, 'Settings', _currentIndex == 2),
         ],
       ),
