@@ -48,7 +48,12 @@ void main() {
         ),
       );
 
-      await tester.tap(find.byType(InkWell).first);
+      // Find the InkWell that contains the character's name to avoid tapping the one in IconButton
+      final inkWell = find.ancestor(
+        of: find.text('Kirito'),
+        matching: find.byType(InkWell),
+      );
+      await tester.tap(inkWell);
       expect(tapped, isTrue);
     });
 

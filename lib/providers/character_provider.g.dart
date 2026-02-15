@@ -46,7 +46,7 @@ final class CharactersProvider
   }
 }
 
-String _$charactersHash() => r'ab448c538426087a9dc86aaf5736d821e59934d6';
+String _$charactersHash() => r'3ceeffdadbb225a677a59712c9577a8d0cf5df54';
 
 @ProviderFor(character)
 const characterProvider = CharacterFamily._();
@@ -102,7 +102,7 @@ final class CharacterProvider
   }
 }
 
-String _$characterHash() => r'535d77c10c1b83de1264fe1246c5183485f62d7b';
+String _$characterHash() => r'27eab02218f36be59162750c55cd0b2beaa6fa89';
 
 final class CharacterFamily extends $Family
     with $FunctionalFamilyOverride<Stream<Character?>, int> {
