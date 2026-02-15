@@ -19,7 +19,7 @@ final class DataNotifierProvider extends $NotifierProvider<DataNotifier, void> {
         argument: null,
         retry: null,
         name: r'dataProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -40,7 +40,7 @@ final class DataNotifierProvider extends $NotifierProvider<DataNotifier, void> {
   }
 }
 
-String _$dataNotifierHash() => r'7c8a9c1a96ea109f9349fc25e301da5766c5acc3';
+String _$dataNotifierHash() => r'890c1bd451fcba4ba4c12bf6bf24dc6b3caff72f';
 
 abstract class _$DataNotifier extends $Notifier<void> {
   void build();

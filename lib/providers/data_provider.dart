@@ -11,7 +11,7 @@ import '../models/player.dart';
 
 part 'data_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DataNotifier extends _$DataNotifier {
   @override
   void build() {}
