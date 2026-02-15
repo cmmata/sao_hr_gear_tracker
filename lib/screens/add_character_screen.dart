@@ -25,7 +25,6 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
   final _helmetController = TextEditingController();
   final _armorController = TextEditingController();
   final _bootsController = TextEditingController();
-  final _earringsController = TextEditingController();
 
   @override
   void initState() {
@@ -43,8 +42,6 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
           widget.character!.armor?.statValue.toString() ?? '';
       _bootsController.text =
           widget.character!.boots?.statValue.toString() ?? '';
-      _earringsController.text =
-          widget.character!.earrings?.statValue.toString() ?? '';
     }
   }
 
@@ -183,8 +180,6 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
             _buildGearField('Armor', _armorController),
             const SizedBox(height: 16),
             _buildGearField('Boots', _bootsController),
-            const SizedBox(height: 16),
-            _buildGearField('Earrings', _earringsController),
           ],
         ),
       ),
@@ -231,8 +226,6 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
     char.helmet = Gear()..statValue = int.tryParse(_helmetController.text) ?? 0;
     char.armor = Gear()..statValue = int.tryParse(_armorController.text) ?? 0;
     char.boots = Gear()..statValue = int.tryParse(_bootsController.text) ?? 0;
-    char.earrings = Gear()
-      ..statValue = int.tryParse(_earringsController.text) ?? 0;
 
     if (widget.character == null) {
       ref.read(characterControllerProvider.notifier).addCharacter(char);

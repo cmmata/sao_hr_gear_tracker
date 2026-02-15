@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../providers/character_provider.dart';
 
-enum GearSlot { shield, helmet, armor, boots, earrings }
+enum GearSlot { shield, helmet, armor, boots }
 
 class GearUpgradePicker extends ConsumerStatefulWidget {
   const GearUpgradePicker({super.key});
@@ -51,9 +51,6 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
               break;
             case GearSlot.boots:
               currentVal = c.boots?.statValue ?? 0;
-              break;
-            case GearSlot.earrings:
-              currentVal = c.earrings?.statValue ?? 0;
               break;
           }
           return MapEntry(c, currentVal);
@@ -152,9 +149,6 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
                         break;
                       case GearSlot.boots:
                         currentVal = c.boots?.statValue ?? 0;
-                        break;
-                      case GearSlot.earrings:
-                        currentVal = c.earrings?.statValue ?? 0;
                         break;
                     }
                     final gain =

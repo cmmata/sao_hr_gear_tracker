@@ -25,8 +25,6 @@ class Character {
 
   Gear? boots;
 
-  Gear? earrings;
-
   int affection = 0;
 
   int bedtimes = 0;
@@ -41,7 +39,6 @@ class Character {
       'helmet': helmet?.toMap(),
       'armor': armor?.toMap(),
       'boots': boots?.toMap(),
-      'earrings': earrings?.toMap(),
       'affection': affection,
       'bedtimes': bedtimes,
     };
@@ -68,9 +65,6 @@ class Character {
           : null
       ..boots = map['boots'] != null
           ? Gear.fromMap(map['boots'] as Map<String, dynamic>)
-          : null
-      ..earrings = map['earrings'] != null
-          ? Gear.fromMap(map['earrings'] as Map<String, dynamic>)
           : null
       ..affection = map['affection'] as int? ?? 0
       ..bedtimes = map['bedtimes'] as int? ?? 0;
