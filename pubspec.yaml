@@ -50,6 +50,7 @@ dev_dependencies:
   test: ">=1.26.3 <1.30.0"
   analyzer: ">=7.0.0 <8.0.0"
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.4
 
 dependency_overrides:
   analyzer: ">=7.0.0 <8.0.0"
@@ -58,7 +59,17 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/app_icon.png"
+  adaptive_icon_background: "#34383e"
+  adaptive_icon_foreground: "assets/app_icon_foreground_v5.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
+
+flutter_native_splash:
+  color: "#f0f0f0"
+  image: "assets/app_icon_foreground_v5.png"
+  android_12:
+    image: "assets/app_icon_foreground_v5.png"
+    color: "#f0f0f0"
+  web: false
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,6 +84,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/icons/
 
   # An image asset can refer to one or more resolution-aware-images
