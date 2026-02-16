@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'theme/app_theme.dart';
 import 'screens/main_scaffold.dart';
 import 'providers/database_provider.dart';
+import 'widgets/loading_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +32,7 @@ class SaoGearTrackerApp extends ConsumerWidget {
             ),
           );
         },
-        loading: () =>
-            const Scaffold(body: Center(child: CircularProgressIndicator())),
+        loading: () => const LoadingScreen(),
       ),
     );
   }
