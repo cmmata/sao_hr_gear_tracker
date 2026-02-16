@@ -6,17 +6,15 @@ import 'package:sao_gear_tracker/providers/player_provider.dart';
 import 'package:sao_gear_tracker/models/player.dart';
 
 void main() {
-  testWidgets('OwnEquipmentScreen displays columns and items', (WidgetTester tester) async {
+  testWidgets('OwnEquipmentScreen displays columns and items', (
+    WidgetTester tester,
+  ) async {
     final player = Player();
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          playerProvider.overrideWith((ref) => Stream.value(player)),
-        ],
-        child: const MaterialApp(
-          home: OwnEquipmentScreen(),
-        ),
+        overrides: [playerProvider.overrideWith((ref) => Stream.value(player))],
+        child: const MaterialApp(home: OwnEquipmentScreen()),
       ),
     );
 

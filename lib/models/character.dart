@@ -90,11 +90,7 @@ class Weapon {
   String? extraStats;
 
   Map<String, dynamic> toMap() {
-    return {
-      'statValue': statValue,
-      'hands': hands,
-      'extraStats': extraStats,
-    };
+    return {'statValue': statValue, 'hands': hands, 'extraStats': extraStats};
   }
 
   factory Weapon.fromMap(Map<String, dynamic> map) {

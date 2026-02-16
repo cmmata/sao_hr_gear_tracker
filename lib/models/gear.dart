@@ -12,10 +12,7 @@ class Gear {
   String? extraStats;
 
   Map<String, dynamic> toMap() {
-    return {
-      'statValue': statValue,
-      'extraStats': extraStats,
-    };
+    return {'statValue': statValue, 'extraStats': extraStats};
   }
 
   factory Gear.fromMap(Map<String, dynamic> map) {

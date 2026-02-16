@@ -9,8 +9,5 @@ part 'database_provider.g.dart';
 @Riverpod(keepAlive: true)
 Future<Isar> isar(Ref ref) async {
   final dir = await getApplicationDocumentsDirectory();
-  return Isar.open(
-    [CharacterSchema, PlayerSchema],
-    directory: dir.path,
-  );
+  return Isar.open([CharacterSchema, PlayerSchema], directory: dir.path);
 }

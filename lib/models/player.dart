@@ -54,7 +54,9 @@ class Player {
       ..dagger = Weapon.fromMap(map['dagger'] as Map<String, dynamic>? ?? {})
       ..mace = Weapon.fromMap(map['mace'] as Map<String, dynamic>? ?? {})
       ..axe = Weapon.fromMap(map['axe'] as Map<String, dynamic>? ?? {})
-      ..scimitar = Weapon.fromMap(map['scimitar'] as Map<String, dynamic>? ?? {})
+      ..scimitar = Weapon.fromMap(
+        map['scimitar'] as Map<String, dynamic>? ?? {},
+      )
       ..katana = Weapon.fromMap(map['katana'] as Map<String, dynamic>? ?? {})
       ..twoHandedSword = Weapon.fromMap(
         map['twoHandedSword'] as Map<String, dynamic>? ?? {},

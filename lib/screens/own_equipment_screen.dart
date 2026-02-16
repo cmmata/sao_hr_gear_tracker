@@ -46,7 +46,9 @@ class OwnEquipmentScreen extends ConsumerWidget {
     final avgAttack =
         weaponList.map((e) => e.$3.statValue).reduce((a, b) => a + b) /
         weaponList.length;
-    final sumDefense = gearList.map((e) => e.$2.statValue).reduce((a, b) => a + b);
+    final sumDefense = gearList
+        .map((e) => e.$2.statValue)
+        .reduce((a, b) => a + b);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -62,9 +64,9 @@ class OwnEquipmentScreen extends ConsumerWidget {
                     Text(
                       'Weapons',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     ...weaponList.map(
@@ -100,9 +102,9 @@ class OwnEquipmentScreen extends ConsumerWidget {
                     Text(
                       'Gear',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     ...gearList.map(
@@ -181,7 +183,10 @@ class OwnEquipmentScreen extends ConsumerWidget {
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
                     extra,
-                    style: const TextStyle(fontSize: 10, fontStyle: FontStyle.italic),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -343,7 +348,9 @@ class _StatEditDialogState extends State<StatEditDialog> {
   @override
   void initState() {
     super.initState();
-    _statController = TextEditingController(text: widget.initialValue.toString());
+    _statController = TextEditingController(
+      text: widget.initialValue.toString(),
+    );
     _extraController = TextEditingController(text: widget.initialExtra ?? '');
   }
 
@@ -413,7 +420,11 @@ class _StatEditDialogState extends State<StatEditDialog> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.blue, width: 4),
                     ),
-                    child: const Icon(Icons.check, color: Colors.blue, size: 40),
+                    child: const Icon(
+                      Icons.check,
+                      color: Colors.blue,
+                      size: 40,
+                    ),
                   ),
                 ),
                 // Cancel Button (Red Circle with Cross)

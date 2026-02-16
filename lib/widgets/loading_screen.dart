@@ -17,10 +17,7 @@ class LoadingScreen extends StatelessWidget {
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.8),
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-              width: 2,
-            ),
+            border: Border.all(color: Theme.of(context).primaryColor, width: 2),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.1),
@@ -43,10 +40,10 @@ class LoadingScreen extends StatelessWidget {
                 message,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                    ),
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
               ),
               const SizedBox(height: 24),
               // Aincrad style linear progress

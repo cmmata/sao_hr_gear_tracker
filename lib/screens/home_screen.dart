@@ -74,7 +74,9 @@ class HomeScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) {
           debugPrint('Error loading characters: $err');
-          return const Center(child: Text('An error occurred while loading data.'));
+          return const Center(
+            child: Text('An error occurred while loading data.'),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(

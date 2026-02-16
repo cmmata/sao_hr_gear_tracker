@@ -14,7 +14,9 @@ void main() {
         ..weapon = (Weapon()..statValue = 50);
     });
 
-    testWidgets('displays character name and stats', (WidgetTester tester) async {
+    testWidgets('displays character name and stats', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(

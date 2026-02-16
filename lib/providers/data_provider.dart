@@ -33,7 +33,9 @@ class DataNotifier extends _$DataNotifier {
     final file = File('${tempDir.path}/sao_gear_tracker_backup.json');
     await file.writeAsString(jsonString);
 
-    await Share.shareXFiles([XFile(file.path)], text: 'SAO Gear Tracker Backup');
+    await Share.shareXFiles([
+      XFile(file.path),
+    ], text: 'SAO Gear Tracker Backup');
   }
 
   Future<bool> importData() async {

@@ -19,7 +19,8 @@ Stream<Player> player(Ref ref) async* {
     });
   }
 
-  yield* isar.players.watchObject(0, fireImmediately: true)
+  yield* isar.players
+      .watchObject(0, fireImmediately: true)
       .map((p) => p ?? (Player()..id = 0));
 }
 
