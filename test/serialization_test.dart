@@ -39,7 +39,8 @@ void main() {
         ..weapon = (Weapon()..statValue = 150)
         ..armor = (Gear()..statValue = 50)
         ..affection = 5
-        ..bedtimes = 2;
+        ..bedtimes = 2
+        ..allConversationsSeen = true;
 
       final map = char.toMap();
       final fromMap = Character.fromMap(map);
@@ -51,6 +52,7 @@ void main() {
       expect(fromMap.armor?.statValue, 50);
       expect(fromMap.affection, 5);
       expect(fromMap.bedtimes, 2);
+      expect(fromMap.allConversationsSeen, true);
     });
 
     test('Player toMap and fromMap', () {

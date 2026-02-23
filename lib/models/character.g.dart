@@ -65,6 +65,11 @@ const CharacterSchema = CollectionSchema(
       type: IsarType.byte,
       enumMap: _CharacterweaponTypeEnumValueMap,
     ),
+    r'zAllConversationsSeen': PropertySchema(
+      id: 9,
+      name: r'zAllConversationsSeen',
+      type: IsarType.bool,
+    ),
   },
 
   estimateSize: _characterEstimateSize,
@@ -186,6 +191,7 @@ void _characterSerialize(
     object.weapon,
   );
   writer.writeByte(offsets[8], object.weaponType.index);
+  writer.writeBool(offsets[9], object.zAllConversationsSeen);
 }
 
 Character _characterDeserialize(
@@ -227,6 +233,7 @@ Character _characterDeserialize(
   object.weaponType =
       _CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offsets[8])] ??
       WeaponType.sword;
+  object.zAllConversationsSeen = reader.readBool(offsets[9]);
   return object;
 }
 
@@ -282,6 +289,8 @@ P _characterDeserializeProp<P>(
       return (_CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offset)] ??
               WeaponType.sword)
           as P;
+    case 9:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -952,6 +961,18 @@ extension CharacterQueryFilter
       );
     });
   }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zAllConversationsSeenEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'zAllConversationsSeen',
+          value: value,
+        ),
+      );
+    });
+  }
 }
 
 extension CharacterQueryObject
@@ -1048,6 +1069,20 @@ extension CharacterQuerySortBy on QueryBuilder<Character, Character, QSortBy> {
       return query.addSortBy(r'weaponType', Sort.desc);
     });
   }
+
+  QueryBuilder<Character, Character, QAfterSortBy>
+  sortByZAllConversationsSeen() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zAllConversationsSeen', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy>
+  sortByZAllConversationsSeenDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zAllConversationsSeen', Sort.desc);
+    });
+  }
 }
 
 extension CharacterQuerySortThenBy
@@ -1111,6 +1146,20 @@ extension CharacterQuerySortThenBy
       return query.addSortBy(r'weaponType', Sort.desc);
     });
   }
+
+  QueryBuilder<Character, Character, QAfterSortBy>
+  thenByZAllConversationsSeen() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zAllConversationsSeen', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterSortBy>
+  thenByZAllConversationsSeenDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zAllConversationsSeen', Sort.desc);
+    });
+  }
 }
 
 extension CharacterQueryWhereDistinct
@@ -1138,6 +1187,13 @@ extension CharacterQueryWhereDistinct
   QueryBuilder<Character, Character, QDistinct> distinctByWeaponType() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'weaponType');
+    });
+  }
+
+  QueryBuilder<Character, Character, QDistinct>
+  distinctByZAllConversationsSeen() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'zAllConversationsSeen');
     });
   }
 }
@@ -1201,6 +1257,13 @@ extension CharacterQueryProperty
   QueryBuilder<Character, WeaponType, QQueryOperations> weaponTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'weaponType');
+    });
+  }
+
+  QueryBuilder<Character, bool, QQueryOperations>
+  zAllConversationsSeenProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'zAllConversationsSeen');
     });
   }
 }

@@ -29,6 +29,12 @@ class Character {
 
   int bedtimes = 0;
 
+  bool zAllConversationsSeen = false;
+
+  @ignore
+  bool get allConversationsSeen => zAllConversationsSeen;
+  set allConversationsSeen(bool value) => zAllConversationsSeen = value;
+
   Map<String, dynamic> toMap() {
     return {
       'id': id == Isar.autoIncrement ? null : id,
@@ -41,6 +47,7 @@ class Character {
       'boots': boots?.toMap(),
       'affection': affection,
       'bedtimes': bedtimes,
+      'allConversationsSeen': allConversationsSeen,
     };
   }
 
@@ -67,7 +74,8 @@ class Character {
           ? Gear.fromMap(map['boots'] as Map<String, dynamic>)
           : null
       ..affection = map['affection'] as int? ?? 0
-      ..bedtimes = map['bedtimes'] as int? ?? 0;
+      ..bedtimes = map['bedtimes'] as int? ?? 0
+      ..allConversationsSeen = map['allConversationsSeen'] as bool? ?? false;
 
     if (map['id'] != null) {
       character.id = map['id'] as int;
