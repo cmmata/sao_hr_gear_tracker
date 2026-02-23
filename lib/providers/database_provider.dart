@@ -9,5 +9,19 @@ part 'database_provider.g.dart';
 @Riverpod(keepAlive: true)
 Future<Isar> isar(Ref ref) async {
   final dir = await getApplicationDocumentsDirectory();
-  return Isar.open([CharacterSchema, PlayerSchema], directory: dir.path);
+  final isar = await Isar.open(
+    [CharacterSchema, PlayerSchema],
+    directory: dir.path,
+  );
+
+  // Ensure a player exists with ID 0
+  if (await isar.players.get(0) == null) {
+    await isar.writeTxn(() async {
+      if (await isar.players.get(0) == null) {
+        await isar.players.put(Player()..id = 0);
+      }
+    });
+  }
+
+  return isar;
 }
