@@ -26,6 +26,10 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
   final _armorController = TextEditingController();
   final _bootsController = TextEditingController();
 
+  // Bed conversations
+  final _bedtimesController = TextEditingController();
+  bool _allConversationsSeen = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +46,21 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
           widget.character!.armor?.statValue.toString() ?? '';
       _bootsController.text =
           widget.character!.boots?.statValue.toString() ?? '';
+      _bedtimesController.text = widget.character!.bedtimes.toString();
+      _allConversationsSeen = widget.character!.allConversationsSeen;
     }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _weaponAttackController.dispose();
+    _shieldController.dispose();
+    _helmetController.dispose();
+    _armorController.dispose();
+    _bootsController.dispose();
+    _bedtimesController.dispose();
+    super.dispose();
   }
 
   int _getHandsForWeapon(WeaponType type) {
@@ -180,6 +198,35 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
             _buildGearField('Armor', _armorController),
             const SizedBox(height: 16),
             _buildGearField('Boots', _bootsController),
+
+            const SizedBox(height: 24),
+            Text(
+              'Bed Conversations',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            CheckboxListTile(
+              title: const Text('All conversations seen'),
+              value: _allConversationsSeen,
+              onChanged: (val) {
+                if (val != null) {
+                  setState(() => _allConversationsSeen = val);
+                }
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+            ),
+            TextField(
+              controller: _bedtimesController,
+              decoration: const InputDecoration(
+                labelText: 'Number of bedtimes',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              enabled: !_allConversationsSeen,
+            ),
           ],
         ),
       ),
@@ -226,6 +273,9 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
     char.helmet = Gear()..statValue = int.tryParse(_helmetController.text) ?? 0;
     char.armor = Gear()..statValue = int.tryParse(_armorController.text) ?? 0;
     char.boots = Gear()..statValue = int.tryParse(_bootsController.text) ?? 0;
+
+    char.bedtimes = int.tryParse(_bedtimesController.text) ?? 0;
+    char.allConversationsSeen = _allConversationsSeen;
 
     if (widget.character == null) {
       ref.read(characterControllerProvider.notifier).addCharacter(char);

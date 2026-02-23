@@ -33,7 +33,8 @@ void main() {
       expect(find.text('ATK'), findsOneWidget);
       expect(find.text('50'), findsOneWidget);
       expect(find.text('DEF'), findsOneWidget);
-      expect(find.text('0'), findsOneWidget);
+      expect(find.text('0'), findsNWidgets(2));
+      expect(find.text('BED'), findsOneWidget);
     });
 
     testWidgets('triggers onTap callback', (WidgetTester tester) async {
@@ -111,6 +112,25 @@ void main() {
 
       final Card card = tester.widget(find.byType(Card));
       expect(card.shape, isA<RoundedRectangleBorder>());
+    });
+
+    testWidgets('displays MAX when all conversations seen', (
+      WidgetTester tester,
+    ) async {
+      character.allConversationsSeen = true;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CharacterCard(
+              character: character,
+              onTap: () {},
+              onEdit: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('MAX'), findsOneWidget);
     });
   });
 }

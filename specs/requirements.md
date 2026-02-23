@@ -12,6 +12,7 @@
 - **Gear**: Composition of Equipment slots.
 - **Affection level**: Integer (Affection with the main character).
 - **Number of bedtimes**: Integer (Number of times the character has been talking with the character on bedroom).
+- **All conversations seen**: Boolean (Indicates if all possible conversations have been seen).
 
 ### 2.2. Weapon Model
 - **Definition**: The main stat is `Attack`
@@ -51,6 +52,10 @@
 - **MUST** allow creating a new character with Name and Weapon Type. The weapon type should be a dropdown with the weapon types, but with a friendly name, not a code.
 - **MUST** allow editing an existing character's Name and Weapon Type.
 - **MUST** allow editing the weapon and gear in each slot (Shield, Helmet, Armor, Boots). Both sections (weapon and gear) should be separated.
+- **MUST** allow tracking bed conversations:
+  - **Counter**: Editable integer for the number of bedtimes.
+  - **Checkbox**: "All conversations seen" checkbox.
+  - **Logic**: If "All conversations seen" is checked, the counter should be disabled/locked.
 
 ### 3.1.2. Upgrade Gear Picker (Core Feature)
 - **Goal**: Identify the best candidate for a specific piece of new gear.

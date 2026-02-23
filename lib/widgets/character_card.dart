@@ -108,6 +108,16 @@ class CharacterCard extends StatelessWidget {
                           value: character.totalDefense.toString(),
                           color: Colors.blue.shade400,
                         ),
+                        const SizedBox(width: 8),
+                        _StatBadge(
+                          label: 'BED',
+                          value: character.allConversationsSeen
+                              ? 'MAX'
+                              : character.bedtimes.toString(),
+                          color: character.allConversationsSeen
+                              ? Colors.green.shade400
+                              : Colors.purple.shade400,
+                        ),
                       ],
                     ),
                   ],
