@@ -17,9 +17,7 @@ Future<Isar> isar(Ref ref) async {
   // Ensure a player exists with ID 0
   if (await isar.players.get(0) == null) {
     await isar.writeTxn(() async {
-      if (await isar.players.get(0) == null) {
-        await isar.players.put(Player()..id = 0);
-      }
+      await isar.players.put(Player()..id = 0);
     });
   }
 
