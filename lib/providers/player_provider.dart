@@ -8,17 +8,6 @@ part 'player_provider.g.dart';
 Stream<Player> player(Ref ref) async* {
   final isar = await ref.watch(isarProvider.future);
 
-  // Ensure a player exists with ID 0
-  final exists = await isar.players.get(0) != null;
-  if (!exists) {
-    await isar.writeTxn(() async {
-      // Double check inside transaction
-      if (await isar.players.get(0) == null) {
-        await isar.players.put(Player()..id = 0);
-      }
-    });
-  }
-
   yield* isar.players
       .watchObject(0, fireImmediately: true)
       .map((p) => p ?? (Player()..id = 0));
