@@ -29,11 +29,11 @@ class Character {
 
   int bedtimes = 0;
 
-  bool zAllConversationsSeen = false;
+  bool _allConversationsSeen = false;
 
   @ignore
-  bool get allConversationsSeen => zAllConversationsSeen;
-  set allConversationsSeen(bool value) => zAllConversationsSeen = value;
+  bool get allConversationsSeen => _allConversationsSeen;
+  set allConversationsSeen(bool value) => _allConversationsSeen = value;
 
   Map<String, dynamic> toMap() {
     return {
