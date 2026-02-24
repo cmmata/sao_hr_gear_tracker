@@ -41,25 +41,53 @@ class OwnEquipmentScreen extends ConsumerWidget {
       (WeaponType.spear, 'Spear', player.spear),
     ];
 
-    final gearList = [
+    final gearList1 = [
       ('Shield', player.shield, 'shield'),
       ('Helmet', player.helmet, 'helmet'),
       ('Armor', player.armor, 'armor'),
       ('Boots', player.boots, 'boots'),
-      ('Earrings', player.earrings, 'earrings'),
+    ];
+
+    final gearList2 = [
+      ('Neck', player.neck, 'neck'),
+      ('Finger', player.finger, 'finger'),
+      ('Waist', player.waist, 'waist'),
+      ('Wrist', player.wrist, 'wrist'),
+      ('Amulet', player.amulet, 'amulet'),
     ];
 
     final avgAttack =
         weaponList.map((e) => e.$3.statValue).reduce((a, b) => a + b) /
         weaponList.length;
-    final sumDefense = gearList
-        .map((e) => e.$2.statValue)
-        .reduce((a, b) => a + b);
+    final sumDefense =
+        [...gearList1, ...gearList2]
+            .map((e) => e.$2.statValue)
+            .reduce((a, b) => a + b);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
+          Row(
+            children: [
+              Expanded(
+                child: _buildSummaryTile(
+                  context,
+                  'AVERAGE ATK',
+                  avgAttack.toStringAsFixed(1),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildSummaryTile(
+                  context,
+                  'TOTAL DEF',
+                  sumDefense.toString(),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -91,12 +119,6 @@ class OwnEquipmentScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 32),
-                    _buildSummaryTile(
-                      context,
-                      'AVERAGE ATK',
-                      avgAttack.toStringAsFixed(1),
-                    ),
                   ],
                 ),
               ),
@@ -113,7 +135,7 @@ class OwnEquipmentScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ...gearList.map(
+                    ...gearList1.map(
                       (g) => _buildItemTile(
                         context,
                         g.$1,
@@ -129,11 +151,25 @@ class OwnEquipmentScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 32),
-                    _buildSummaryTile(
-                      context,
-                      'TOTAL DEF',
-                      sumDefense.toString(),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Divider(thickness: 2),
+                    ),
+                    ...gearList2.map(
+                      (g) => _buildItemTile(
+                        context,
+                        g.$1,
+                        g.$2.statValue,
+                        g.$2.extraStats,
+                        () => _showEditGearDialog(
+                          context,
+                          ref,
+                          player,
+                          g.$3,
+                          g.$1,
+                          g.$2,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -315,8 +351,20 @@ class OwnEquipmentScreen extends ConsumerWidget {
             case 'boots':
               player.boots = updatedGear;
               break;
-            case 'earrings':
-              player.earrings = updatedGear;
+            case 'neck':
+              player.neck = updatedGear;
+              break;
+            case 'finger':
+              player.finger = updatedGear;
+              break;
+            case 'waist':
+              player.waist = updatedGear;
+              break;
+            case 'wrist':
+              player.wrist = updatedGear;
+              break;
+            case 'amulet':
+              player.amulet = updatedGear;
               break;
           }
 

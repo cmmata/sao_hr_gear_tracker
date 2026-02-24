@@ -24,7 +24,35 @@ class Player {
   Gear helmet = Gear();
   Gear armor = Gear();
   Gear boots = Gear();
+
+  /// Deprecated, use new gear slots. Kept for Isar ID stability.
   Gear earrings = Gear();
+
+  Gear zAmulet = Gear();
+  Gear zFinger = Gear();
+  Gear zNeck = Gear();
+  Gear zWaist = Gear();
+  Gear zWrist = Gear();
+
+  @ignore
+  Gear get amulet => zAmulet;
+  set amulet(Gear v) => zAmulet = v;
+
+  @ignore
+  Gear get finger => zFinger;
+  set finger(Gear v) => zFinger = v;
+
+  @ignore
+  Gear get neck => zNeck;
+  set neck(Gear v) => zNeck = v;
+
+  @ignore
+  Gear get waist => zWaist;
+  set waist(Gear v) => zWaist = v;
+
+  @ignore
+  Gear get wrist => zWrist;
+  set wrist(Gear v) => zWrist = v;
 
   Map<String, dynamic> toMap() {
     return {
@@ -42,7 +70,11 @@ class Player {
       'helmet': helmet.toMap(),
       'armor': armor.toMap(),
       'boots': boots.toMap(),
-      'earrings': earrings.toMap(),
+      'amulet': amulet.toMap(),
+      'finger': finger.toMap(),
+      'neck': neck.toMap(),
+      'waist': waist.toMap(),
+      'wrist': wrist.toMap(),
     };
   }
 
@@ -66,6 +98,10 @@ class Player {
       ..helmet = Gear.fromMap(map['helmet'] as Map<String, dynamic>? ?? {})
       ..armor = Gear.fromMap(map['armor'] as Map<String, dynamic>? ?? {})
       ..boots = Gear.fromMap(map['boots'] as Map<String, dynamic>? ?? {})
-      ..earrings = Gear.fromMap(map['earrings'] as Map<String, dynamic>? ?? {});
+      ..amulet = Gear.fromMap(map['amulet'] as Map<String, dynamic>? ?? {})
+      ..finger = Gear.fromMap(map['finger'] as Map<String, dynamic>? ?? {})
+      ..neck = Gear.fromMap(map['neck'] as Map<String, dynamic>? ?? {})
+      ..waist = Gear.fromMap(map['waist'] as Map<String, dynamic>? ?? {})
+      ..wrist = Gear.fromMap(map['wrist'] as Map<String, dynamic>? ?? {});
   }
 }
