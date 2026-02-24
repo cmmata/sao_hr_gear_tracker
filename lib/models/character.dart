@@ -7,6 +7,8 @@ part 'character.g.dart';
 class Character {
   Character();
 
+  static const int maxNameLength = 50;
+
   Id id = Isar.autoIncrement;
 
   @Index()
