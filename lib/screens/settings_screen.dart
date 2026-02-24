@@ -28,7 +28,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Error loading app version: $e');
+      debugPrint('[SettingsScreen] Error loading app version: $e');
       if (mounted) {
         setState(() {
           _appVersion = 'Error loading version';
