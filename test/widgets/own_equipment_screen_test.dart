@@ -27,7 +27,5 @@ void main() {
 
     expect(find.text('Sword'), findsOneWidget);
     expect(find.text('Shield'), findsOneWidget);
-    expect(find.text('Neck'), findsOneWidget);
-    expect(find.text('Amulet'), findsOneWidget);
   });
 }

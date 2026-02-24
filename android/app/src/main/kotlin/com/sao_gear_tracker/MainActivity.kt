@@ -1,4 +1,4 @@
-package com.cmmata.sao_gear_tracker
+package com.sao_gear_tracker
 
 import io.flutter.embedding.android.FlutterActivity
 
