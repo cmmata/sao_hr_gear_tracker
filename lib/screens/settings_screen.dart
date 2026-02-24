@@ -127,7 +127,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const SnackBar(content: Text('Data exported successfully')),
               );
             } catch (e) {
-              debugPrint('Error exporting data: $e');
+              debugPrint('[SettingsScreen] Error exporting data: $e');
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
