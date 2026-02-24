@@ -4,6 +4,7 @@ import '../providers/player_provider.dart';
 import '../models/character.dart';
 import '../models/gear.dart';
 import '../models/player.dart';
+import '../utils/stat_utils.dart';
 
 class OwnEquipmentScreen extends ConsumerWidget {
   const OwnEquipmentScreen({super.key});
@@ -407,7 +408,7 @@ class _StatEditDialogState extends State<StatEditDialog> {
                 // OK Button (Blue Circle with Check)
                 InkWell(
                   onTap: () {
-                    final newValue = int.tryParse(_statController.text) ?? 0;
+                    final newValue = parseStat(_statController.text);
                     final newExtra = _extraController.text;
                     widget.onSave(newValue, newExtra);
                     Navigator.pop(context);
