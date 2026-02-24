@@ -26,11 +26,7 @@
   - **Helmet**
   - **Armor**
   - **Boots**
-  - **Neck** (Only for Own Equipment)
-  - **Finger** (Only for Own Equipment)
-  - **Waist** (Only for Own Equipment)
-  - **Wrist** (Only for Own Equipment)
-  - **Amulet** (Only for Own Equipment)
+  - **Earrings** (Only for Own Equipment)
 - **Properties**:
   - **Stat Value**: Integer (Defense)
   - **Extra Stats**: String (Free text for bonuses like STR+10, VIT+5).
@@ -87,17 +83,14 @@
 ### 3.2. Own Equipment
 - **Goal**: Display all equipment the user has.
 - **Action**:
-  - **MUST** show Average Attack and Total Defense badges at the top.
-  - **MUST** show two columns below: one for weapons, and one for the gear.
-  - **MUST** display a list of all weapon types in the first column (the main user has one of each type).
-  - **MUST** display the attack value of each weapon on that column.
-  - **MUST** show an AVERAGE of the attack of all weapons.
-  - **MUST** display gear in the second column, split into two blocks:
-    - Block 1: Shield, Helmet, Armor, Boots.
-    - Block 2 (separated by a horizontal line): Neck, Finger, Waist, Wrist, Amulet.
-  - **MUST** display the defense value of each gear on the second column.
-  - **MUST** allow editing the weapon and gear in each slot.
-  - **MUST** show a SUM of the defense of all gear.
+  - **MUST** show two columns: one for weapons, and one for the gear
+  - **MUST** display a list of all weapon types in the first column (the main user has one of each type)
+  - **MUST** display the attack value of each weapon on the that column
+  - **MUST** display a list of all slots in the second column (the main user has one of each type)
+  - **MUST** display the defense value of each gear on the second column
+  - **MUST** allow editing the weapon and gear in each slot (Shield, Helmet, Armor, Boots, Earrings). Both sections (weapon and gear) should be separated.
+  - **MUST** show an AVERAGE of the attack of all weapons on the first column
+  - **MUST** show a SUM of the defense of all gear on the second column
 
 ### 3.3. Settings
 - **Goal**: Settings for the app.

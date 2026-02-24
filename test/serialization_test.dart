@@ -58,15 +58,13 @@ void main() {
     test('Player toMap and fromMap', () {
       final player = Player()
         ..sword = (Weapon()..statValue = 200)
-        ..shield = (Gear()..statValue = 80)
-        ..neck = (Gear()..statValue = 10);
+        ..shield = (Gear()..statValue = 80);
 
       final map = player.toMap();
       final fromMap = Player.fromMap(map);
 
       expect(fromMap.sword.statValue, 200);
       expect(fromMap.shield.statValue, 80);
-      expect(fromMap.neck.statValue, 10);
     });
 
     test('Player fromMap with missing keys handles defaults', () {

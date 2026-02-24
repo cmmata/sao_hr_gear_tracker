@@ -115,41 +115,6 @@ const PlayerSchema = CollectionSchema(
 
       target: r'Weapon',
     ),
-    r'zAmulet': PropertySchema(
-      id: 14,
-      name: r'zAmulet',
-      type: IsarType.object,
-
-      target: r'Gear',
-    ),
-    r'zFinger': PropertySchema(
-      id: 15,
-      name: r'zFinger',
-      type: IsarType.object,
-
-      target: r'Gear',
-    ),
-    r'zNeck': PropertySchema(
-      id: 16,
-      name: r'zNeck',
-      type: IsarType.object,
-
-      target: r'Gear',
-    ),
-    r'zWaist': PropertySchema(
-      id: 17,
-      name: r'zWaist',
-      type: IsarType.object,
-
-      target: r'Gear',
-    ),
-    r'zWrist': PropertySchema(
-      id: 18,
-      name: r'zWrist',
-      type: IsarType.object,
-
-      target: r'Gear',
-    ),
   },
 
   estimateSize: _playerEstimateSize,
@@ -219,18 +184,6 @@ int _playerEstimateSize(
         allOffsets[Weapon]!,
         allOffsets,
       );
-  bytesCount +=
-      3 +
-      GearSchema.estimateSize(object.zAmulet, allOffsets[Gear]!, allOffsets);
-  bytesCount +=
-      3 +
-      GearSchema.estimateSize(object.zFinger, allOffsets[Gear]!, allOffsets);
-  bytesCount +=
-      3 + GearSchema.estimateSize(object.zNeck, allOffsets[Gear]!, allOffsets);
-  bytesCount +=
-      3 + GearSchema.estimateSize(object.zWaist, allOffsets[Gear]!, allOffsets);
-  bytesCount +=
-      3 + GearSchema.estimateSize(object.zWrist, allOffsets[Gear]!, allOffsets);
   return bytesCount;
 }
 
@@ -323,36 +276,6 @@ void _playerSerialize(
     allOffsets,
     WeaponSchema.serialize,
     object.twoHandedSword,
-  );
-  writer.writeObject<Gear>(
-    offsets[14],
-    allOffsets,
-    GearSchema.serialize,
-    object.zAmulet,
-  );
-  writer.writeObject<Gear>(
-    offsets[15],
-    allOffsets,
-    GearSchema.serialize,
-    object.zFinger,
-  );
-  writer.writeObject<Gear>(
-    offsets[16],
-    allOffsets,
-    GearSchema.serialize,
-    object.zNeck,
-  );
-  writer.writeObject<Gear>(
-    offsets[17],
-    allOffsets,
-    GearSchema.serialize,
-    object.zWaist,
-  );
-  writer.writeObject<Gear>(
-    offsets[18],
-    allOffsets,
-    GearSchema.serialize,
-    object.zWrist,
   );
 }
 
@@ -462,41 +385,6 @@ Player _playerDeserialize(
         allOffsets,
       ) ??
       Weapon();
-  object.zAmulet =
-      reader.readObjectOrNull<Gear>(
-        offsets[14],
-        GearSchema.deserialize,
-        allOffsets,
-      ) ??
-      Gear();
-  object.zFinger =
-      reader.readObjectOrNull<Gear>(
-        offsets[15],
-        GearSchema.deserialize,
-        allOffsets,
-      ) ??
-      Gear();
-  object.zNeck =
-      reader.readObjectOrNull<Gear>(
-        offsets[16],
-        GearSchema.deserialize,
-        allOffsets,
-      ) ??
-      Gear();
-  object.zWaist =
-      reader.readObjectOrNull<Gear>(
-        offsets[17],
-        GearSchema.deserialize,
-        allOffsets,
-      ) ??
-      Gear();
-  object.zWrist =
-      reader.readObjectOrNull<Gear>(
-        offsets[18],
-        GearSchema.deserialize,
-        allOffsets,
-      ) ??
-      Gear();
   return object;
 }
 
@@ -618,46 +506,6 @@ P _playerDeserializeProp<P>(
                 allOffsets,
               ) ??
               Weapon())
-          as P;
-    case 14:
-      return (reader.readObjectOrNull<Gear>(
-                offset,
-                GearSchema.deserialize,
-                allOffsets,
-              ) ??
-              Gear())
-          as P;
-    case 15:
-      return (reader.readObjectOrNull<Gear>(
-                offset,
-                GearSchema.deserialize,
-                allOffsets,
-              ) ??
-              Gear())
-          as P;
-    case 16:
-      return (reader.readObjectOrNull<Gear>(
-                offset,
-                GearSchema.deserialize,
-                allOffsets,
-              ) ??
-              Gear())
-          as P;
-    case 17:
-      return (reader.readObjectOrNull<Gear>(
-                offset,
-                GearSchema.deserialize,
-                allOffsets,
-              ) ??
-              Gear())
-          as P;
-    case 18:
-      return (reader.readObjectOrNull<Gear>(
-                offset,
-                GearSchema.deserialize,
-                allOffsets,
-              ) ??
-              Gear())
           as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -925,46 +773,6 @@ extension PlayerQueryObject on QueryBuilder<Player, Player, QFilterCondition> {
       return query.object(q, r'twoHandedSword');
     });
   }
-
-  QueryBuilder<Player, Player, QAfterFilterCondition> zAmulet(
-    FilterQuery<Gear> q,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'zAmulet');
-    });
-  }
-
-  QueryBuilder<Player, Player, QAfterFilterCondition> zFinger(
-    FilterQuery<Gear> q,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'zFinger');
-    });
-  }
-
-  QueryBuilder<Player, Player, QAfterFilterCondition> zNeck(
-    FilterQuery<Gear> q,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'zNeck');
-    });
-  }
-
-  QueryBuilder<Player, Player, QAfterFilterCondition> zWaist(
-    FilterQuery<Gear> q,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'zWaist');
-    });
-  }
-
-  QueryBuilder<Player, Player, QAfterFilterCondition> zWrist(
-    FilterQuery<Gear> q,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'zWrist');
-    });
-  }
 }
 
 extension PlayerQueryLinks on QueryBuilder<Player, Player, QFilterCondition> {}
@@ -1075,36 +883,6 @@ extension PlayerQueryProperty on QueryBuilder<Player, Player, QQueryProperty> {
   QueryBuilder<Player, Weapon, QQueryOperations> twoHandedSwordProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'twoHandedSword');
-    });
-  }
-
-  QueryBuilder<Player, Gear, QQueryOperations> zAmuletProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'zAmulet');
-    });
-  }
-
-  QueryBuilder<Player, Gear, QQueryOperations> zFingerProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'zFinger');
-    });
-  }
-
-  QueryBuilder<Player, Gear, QQueryOperations> zNeckProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'zNeck');
-    });
-  }
-
-  QueryBuilder<Player, Gear, QQueryOperations> zWaistProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'zWaist');
-    });
-  }
-
-  QueryBuilder<Player, Gear, QQueryOperations> zWristProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'zWrist');
     });
   }
 }

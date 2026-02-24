@@ -40,7 +40,7 @@ final class PlayerProvider
   }
 }
 
-String _$playerHash() => r'f8354649daea689e809270bec721e8bc504a2474';
+String _$playerHash() => r'c7b5874674cc2f4aaa2dea3fb9d08b863b9875c5';
 
 @ProviderFor(PlayerController)
 const playerControllerProvider = PlayerControllerProvider._();
