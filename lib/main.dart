@@ -28,7 +28,7 @@ class SaoGearTrackerApp extends ConsumerWidget {
           debugPrint('Error initializing Isar: $err');
           return const Scaffold(
             body: Center(
-              child: Text('An error occurred while initializing the database.'),
+              child: Text('Database initialization failed. Please restart the app.'),
             ),
           );
         },
