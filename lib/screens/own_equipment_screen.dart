@@ -19,7 +19,7 @@ class OwnEquipmentScreen extends ConsumerWidget {
         data: (player) => _buildBody(context, ref, player),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) {
-          debugPrint('Error loading player equipment: $err');
+          debugPrint('[OwnEquipmentScreen] Error loading player equipment: $err');
           return const Center(
             child: Text('An error occurred while loading equipment.'),
           );
