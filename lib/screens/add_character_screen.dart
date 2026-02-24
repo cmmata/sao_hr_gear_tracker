@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../models/gear.dart';
@@ -131,6 +132,8 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
           children: [
             TextField(
               controller: _nameController,
+              maxLength: Character.maxNameLength,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: const InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(),
@@ -245,10 +248,11 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
   }
 
   void _save() {
-    if (_nameController.text.isEmpty) return;
+    final name = _nameController.text.trim();
+    if (name.isEmpty || name.length > Character.maxNameLength) return;
 
     final char = widget.character ?? Character();
-    char.name = _nameController.text;
+    char.name = name;
     char.weaponType = _selectedWeapon;
 
     // Auto-set hands
