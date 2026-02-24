@@ -243,7 +243,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           );
         }
       } catch (e) {
-        debugPrint('Error importing data: $e');
+        debugPrint('[SettingsScreen] Error importing data: $e');
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Import failed. Please try again.')),
