@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../providers/character_provider.dart';
+import '../utils/stat_utils.dart';
 
 enum GearSlot { shield, helmet, armor, boots }
 
@@ -18,11 +19,12 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
   List<Character> _suggestions = [];
 
   void _calculateUpgrade() async {
-    final val = int.tryParse(_valueController.text);
-    if (val == null) {
+    final text = _valueController.text;
+    if (text.isEmpty || int.tryParse(text) == null) {
       if (mounted) setState(() => _suggestions = []);
       return;
     }
+    final val = parseStat(text);
 
     final characters = await ref.read(charactersProvider.future);
 
@@ -151,8 +153,7 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
                         currentVal = c.boots?.statValue ?? 0;
                         break;
                     }
-                    final gain =
-                        (int.tryParse(_valueController.text) ?? 0) - currentVal;
+                    final gain = parseStat(_valueController.text) - currentVal;
 
                     return ListTile(
                       leading: CircleAvatar(

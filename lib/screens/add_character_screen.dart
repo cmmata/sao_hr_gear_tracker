@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../models/gear.dart';
 import '../providers/character_provider.dart';
+import '../utils/stat_utils.dart';
 
 class AddCharacterScreen extends ConsumerStatefulWidget {
   final Character? character;
@@ -259,7 +260,7 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
     final hands = _getHandsForWeapon(_selectedWeapon);
 
     char.weapon = Weapon()
-      ..statValue = int.tryParse(_weaponAttackController.text) ?? 0
+      ..statValue = parseStat(_weaponAttackController.text)
       ..hands = hands;
 
     // If hands=2, force shield to null or 0?
@@ -270,15 +271,14 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
     if (hands == 2) {
       char.shield = null;
     } else {
-      char.shield = Gear()
-        ..statValue = int.tryParse(_shieldController.text) ?? 0;
+      char.shield = Gear()..statValue = parseStat(_shieldController.text);
     }
 
-    char.helmet = Gear()..statValue = int.tryParse(_helmetController.text) ?? 0;
-    char.armor = Gear()..statValue = int.tryParse(_armorController.text) ?? 0;
-    char.boots = Gear()..statValue = int.tryParse(_bootsController.text) ?? 0;
+    char.helmet = Gear()..statValue = parseStat(_helmetController.text);
+    char.armor = Gear()..statValue = parseStat(_armorController.text);
+    char.boots = Gear()..statValue = parseStat(_bootsController.text);
 
-    char.bedtimes = int.tryParse(_bedtimesController.text) ?? 0;
+    char.bedtimes = parseStat(_bedtimesController.text);
     char.allConversationsSeen = _allConversationsSeen;
 
     if (widget.character == null) {

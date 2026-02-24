@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../providers/character_provider.dart';
+import '../utils/stat_utils.dart';
 
 class WeaponUpgradePicker extends ConsumerStatefulWidget {
   const WeaponUpgradePicker({super.key});
@@ -17,11 +18,12 @@ class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
   List<Character> _suggestions = [];
 
   void _calculateUpgrade() async {
-    final val = int.tryParse(_valueController.text);
-    if (val == null) {
+    final text = _valueController.text;
+    if (text.isEmpty || int.tryParse(text) == null) {
       if (mounted) setState(() => _suggestions = []);
       return;
     }
+    final val = parseStat(text);
 
     final characters = await ref.read(charactersProvider.future);
 
@@ -121,8 +123,7 @@ class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
                   itemBuilder: (context, index) {
                     final c = _suggestions[index];
                     final currentVal = c.weapon?.statValue ?? 0;
-                    final gain =
-                        (int.tryParse(_valueController.text) ?? 0) - currentVal;
+                    final gain = parseStat(_valueController.text) - currentVal;
 
                     return ListTile(
                       leading: CircleAvatar(

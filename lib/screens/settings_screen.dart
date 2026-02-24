@@ -28,6 +28,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         });
       }
     } catch (e) {
+      debugPrint('[SettingsScreen] Error loading app version: $e');
       if (mounted) {
         setState(() {
           _appVersion = 'Error loading version';
@@ -126,10 +127,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const SnackBar(content: Text('Data exported successfully')),
               );
             } catch (e) {
+              debugPrint('[SettingsScreen] Error exporting data: $e');
               if (!context.mounted) return;
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Export failed. Please try again.'),
+                ),
+              );
             }
           },
         ),
@@ -239,10 +243,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           );
         }
       } catch (e) {
+        debugPrint('[SettingsScreen] Error importing data: $e');
         if (!context.mounted) return;
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Import failed: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Import failed. Please try again.')),
+        );
       }
     }
   }
