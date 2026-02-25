@@ -117,6 +117,12 @@ void main() {
     final nameField = find.byType(TextField).first;
     await tester.enterText(nameField, '  Valid Name  ');
 
+    // Add a skill fusion (now required)
+    await tester.tap(find.byIcon(Icons.add_circle));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('ATTACKER'));
+    await tester.pumpAndSettle();
+
     await tester.tap(findOkButton().first);
     await tester.pumpAndSettle();
 
