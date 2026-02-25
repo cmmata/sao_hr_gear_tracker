@@ -32,6 +32,9 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
   final _bedtimesController = TextEditingController();
   bool _allConversationsSeen = false;
 
+  // Skill Fusions
+  List<SkillFusion> _skillFusions = [];
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +53,11 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
           widget.character!.boots?.statValue.toString() ?? '';
       _bedtimesController.text = widget.character!.bedtimes.toString();
       _allConversationsSeen = widget.character!.allConversationsSeen;
+      _skillFusions = widget.character!.skillFusions
+          .map((e) => SkillFusion()
+            ..type = e.type
+            ..level = e.level)
+          .toList();
     }
   }
 
@@ -204,6 +212,33 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
             _buildGearField('Boots', _bootsController),
 
             const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Skill Fusions',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (_skillFusions.length < 4)
+                  IconButton(
+                    icon: const Icon(Icons.add_circle, color: Colors.blue),
+                    onPressed: _showAddFusionDialog,
+                  ),
+              ],
+            ),
+            if (_skillFusions.isEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'No skill fusions added. Add at least one.',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            ..._skillFusions.map((fusion) => _buildFusionTile(fusion)),
+
+            const SizedBox(height: 24),
             Text(
               'Bed Conversations',
               style: Theme.of(
@@ -237,6 +272,65 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
     );
   }
 
+  Widget _buildFusionTile(SkillFusion fusion) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      child: ListTile(
+        title: Text(fusion.type.displayName),
+        subtitle: Text('Level: ${fusion.level}'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.remove),
+              onPressed: fusion.level > 0
+                  ? () => setState(() => fusion.level--)
+                  : null,
+            ),
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: fusion.level < 5
+                  ? () => setState(() => fusion.level++)
+                  : null,
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => setState(() => _skillFusions.remove(fusion)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showAddFusionDialog() {
+    final availableTypes = SkillFusionType.values
+        .where((type) => !_skillFusions.any((f) => f.type == type))
+        .toList();
+
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('Add Skill Fusion'),
+        children: availableTypes
+            .map(
+              (type) => SimpleDialogOption(
+                onPressed: () {
+                  setState(() {
+                    _skillFusions.add(SkillFusion()
+                      ..type = type
+                      ..level = 0);
+                  });
+                  Navigator.pop(context);
+                },
+                child: Text(type.displayName),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
   Widget _buildGearField(String label, TextEditingController controller) {
     return TextField(
       controller: controller,
@@ -251,6 +345,13 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
   void _save() {
     final name = _nameController.text.trim();
     if (name.isEmpty || name.length > Character.maxNameLength) return;
+
+    if (_skillFusions.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please add at least one skill fusion.')),
+      );
+      return;
+    }
 
     final char = widget.character ?? Character();
     char.name = name;
@@ -280,6 +381,8 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
 
     char.bedtimes = parseStat(_bedtimesController.text);
     char.allConversationsSeen = _allConversationsSeen;
+
+    char.skillFusions = _skillFusions;
 
     if (widget.character == null) {
       ref.read(characterControllerProvider.notifier).addCharacter(char);

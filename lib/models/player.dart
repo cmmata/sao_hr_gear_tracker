@@ -26,6 +26,22 @@ class Player {
   Gear boots = Gear();
   Gear earrings = Gear();
 
+  int? zActiveFusionCharacterId;
+  @ignore
+  int? get activeFusionCharacterId => zActiveFusionCharacterId;
+  set activeFusionCharacterId(int? value) => zActiveFusionCharacterId = value;
+
+  @enumerated
+  SkillFusionType zActiveFusionType = SkillFusionType.attacker;
+  @ignore
+  SkillFusionType? get activeFusionType =>
+      zActiveFusionCharacterId == null ? null : zActiveFusionType;
+  set activeFusionType(SkillFusionType? value) {
+    if (value != null) {
+      zActiveFusionType = value;
+    }
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -43,11 +59,13 @@ class Player {
       'armor': armor.toMap(),
       'boots': boots.toMap(),
       'earrings': earrings.toMap(),
+      'activeFusionCharacterId': activeFusionCharacterId,
+      'activeFusionType': activeFusionType?.name,
     };
   }
 
   factory Player.fromMap(Map<String, dynamic> map) {
-    return Player()
+    final player = Player()
       ..id = map['id'] as int? ?? 0
       ..sword = Weapon.fromMap(map['sword'] as Map<String, dynamic>? ?? {})
       ..rapier = Weapon.fromMap(map['rapier'] as Map<String, dynamic>? ?? {})
@@ -66,6 +84,15 @@ class Player {
       ..helmet = Gear.fromMap(map['helmet'] as Map<String, dynamic>? ?? {})
       ..armor = Gear.fromMap(map['armor'] as Map<String, dynamic>? ?? {})
       ..boots = Gear.fromMap(map['boots'] as Map<String, dynamic>? ?? {})
-      ..earrings = Gear.fromMap(map['earrings'] as Map<String, dynamic>? ?? {});
+      ..earrings = Gear.fromMap(map['earrings'] as Map<String, dynamic>? ?? {})
+      ..activeFusionCharacterId = map['activeFusionCharacterId'] as int?;
+
+    if (map['activeFusionType'] != null) {
+      player.zActiveFusionType = SkillFusionType.values.firstWhere(
+        (e) => e.name == map['activeFusionType'],
+        orElse: () => SkillFusionType.attacker,
+      );
+    }
+    return player;
   }
 }

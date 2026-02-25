@@ -46,12 +46,31 @@ void main() {
     // Enter negative defense (Shield)
     await tester.enterText(find.byType(TextField).at(2), '-100');
 
+    // Add a skill fusion (now required)
+    await tester.tap(find.byIcon(Icons.add_circle));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Attacker'));
+    await tester.pumpAndSettle();
+
     // Save
-    // In AddCharacterScreen, the OK button is currently the second InkWell
-    // (the first is the CheckboxListTile)
-    // We can find it more reliably by looking for the InkWell that has a blue color decoration
-    // or just use at(1) based on our discovery.
-    await tester.tap(find.byType(InkWell).at(1));
+    // The OK button is an InkWell containing a blue circle.
+    final okButton = find.byWidgetPredicate(
+      (widget) =>
+          widget is InkWell &&
+          find
+              .descendant(
+                of: find.byWidget(widget),
+                matching: find.byWidgetPredicate(
+                  (w) =>
+                      w is Container &&
+                      w.decoration is BoxDecoration &&
+                      (w.decoration as BoxDecoration).color == Colors.blue,
+                ),
+              )
+              .evaluate()
+              .isNotEmpty,
+    );
+    await tester.tap(okButton);
     await tester.pumpAndSettle();
 
     expect(fakeController.lastAddedCharacter, isNotNull);

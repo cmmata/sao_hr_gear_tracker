@@ -37,6 +37,12 @@ class Character {
   bool get allConversationsSeen => zAllConversationsSeen;
   set allConversationsSeen(bool value) => zAllConversationsSeen = value;
 
+  List<SkillFusion> zSkillFusions = [];
+
+  @ignore
+  List<SkillFusion> get skillFusions => zSkillFusions;
+  set skillFusions(List<SkillFusion> value) => zSkillFusions = value;
+
   Map<String, dynamic> toMap() {
     return {
       'id': id == Isar.autoIncrement ? null : id,
@@ -50,6 +56,7 @@ class Character {
       'affection': affection,
       'bedtimes': bedtimes,
       'allConversationsSeen': allConversationsSeen,
+      'skillFusions': skillFusions.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -77,7 +84,11 @@ class Character {
           : null
       ..affection = map['affection'] as int? ?? 0
       ..bedtimes = map['bedtimes'] as int? ?? 0
-      ..allConversationsSeen = map['allConversationsSeen'] as bool? ?? false;
+      ..allConversationsSeen = map['allConversationsSeen'] as bool? ?? false
+      ..skillFusions = (map['skillFusions'] as List<dynamic>?)
+              ?.map((e) => SkillFusion.fromMap(e as Map<String, dynamic>))
+              .toList() ??
+          [];
 
     if (map['id'] != null) {
       character.id = map['id'] as int;
@@ -108,6 +119,40 @@ class Weapon {
       ..statValue = map['statValue'] as int? ?? 0
       ..hands = map['hands'] as int? ?? 1
       ..extraStats = map['extraStats'] as String?;
+  }
+}
+
+enum SkillFusionType { attacker, tank, healer, buffer }
+
+extension SkillFusionTypeExtension on SkillFusionType {
+  String get displayName {
+    return name[0].toUpperCase() + name.substring(1);
+  }
+}
+
+@embedded
+class SkillFusion {
+  SkillFusion();
+
+  @enumerated
+  SkillFusionType type = SkillFusionType.attacker;
+
+  int level = 0;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'type': type.name,
+      'level': level,
+    };
+  }
+
+  factory SkillFusion.fromMap(Map<String, dynamic> map) {
+    return SkillFusion()
+      ..type = SkillFusionType.values.firstWhere(
+        (e) => e.name == map['type'],
+        orElse: () => SkillFusionType.attacker,
+      )
+      ..level = map['level'] as int? ?? 0;
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/character_provider.dart';
 import '../providers/player_provider.dart';
 import '../models/character.dart';
 import '../models/gear.dart';
@@ -12,11 +13,12 @@ class OwnEquipmentScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playerAsync = ref.watch(playerProvider);
+    final charactersAsync = ref.watch(charactersProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Own Equipment')),
       body: playerAsync.when(
-        data: (player) => _buildBody(context, ref, player),
+        data: (player) => _buildBody(context, ref, player, charactersAsync),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) {
           debugPrint('[OwnEquipmentScreen] Error loading player equipment: $err');
@@ -28,7 +30,12 @@ class OwnEquipmentScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, WidgetRef ref, Player player) {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    Player player,
+    AsyncValue<List<Character>> charactersAsync,
+  ) {
     final weaponList = [
       (WeaponType.sword, 'Sword', player.sword),
       (WeaponType.rapier, 'Rapier', player.rapier),
@@ -140,9 +147,133 @@ class OwnEquipmentScreen extends ConsumerWidget {
               ),
             ],
           ),
+          const Divider(height: 48),
+          _buildFusionSection(context, ref, player, charactersAsync),
           const SizedBox(height: 80), // Space for bottom nav
         ],
       ),
+    );
+  }
+
+  Widget _buildFusionSection(
+    BuildContext context,
+    WidgetRef ref,
+    Player player,
+    AsyncValue<List<Character>> charactersAsync,
+  ) {
+    return charactersAsync.when(
+      data: (characters) {
+        if (characters.isEmpty) return const SizedBox.shrink();
+
+        final activeChar = player.activeFusionCharacterId != null
+            ? characters
+                .where((c) => c.id == player.activeFusionCharacterId)
+                .firstOrNull
+            : null;
+
+        final activeFusion = activeChar?.skillFusions
+            .where((f) => f.type == player.activeFusionType)
+            .firstOrNull;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Skill Fusion Progress',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<int?>(
+              value: player.activeFusionCharacterId,
+              decoration: const InputDecoration(
+                labelText: 'Helping Character',
+                border: OutlineInputBorder(),
+              ),
+              items: [
+                const DropdownMenuItem<int?>(
+                  value: null,
+                  child: Text('None'),
+                ),
+                ...characters.map(
+                  (c) => DropdownMenuItem<int?>(
+                    value: c.id,
+                    child: Text(c.name ?? 'Unknown'),
+                  ),
+                ),
+              ],
+              onChanged: (val) {
+                player.activeFusionCharacterId = val;
+                // If character changed, reset fusion type to first available or null
+                if (val == null) {
+                  player.activeFusionType = null;
+                } else {
+                  final newChar = characters.firstWhere((c) => c.id == val);
+                  if (newChar.skillFusions.isNotEmpty) {
+                    player.activeFusionType = newChar.skillFusions.first.type;
+                  } else {
+                    player.activeFusionType = null;
+                  }
+                }
+                ref.read(playerControllerProvider.notifier).updatePlayer(player);
+              },
+            ),
+            if (activeChar != null && activeChar.skillFusions.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              DropdownButtonFormField<SkillFusionType>(
+                value: player.activeFusionType,
+                decoration: const InputDecoration(
+                  labelText: 'Skill Type',
+                  border: OutlineInputBorder(),
+                ),
+                items: activeChar.skillFusions
+                    .map(
+                      (f) => DropdownMenuItem(
+                        value: f.type,
+                        child: Text(f.type.displayName),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (val) {
+                  player.activeFusionType = val;
+                  ref.read(playerControllerProvider.notifier).updatePlayer(player);
+                },
+              ),
+            ],
+            if (player.activeFusionCharacterId != null &&
+                player.activeFusionType != null &&
+                activeChar != null &&
+                activeFusion != null) ...[
+              const SizedBox(height: 24),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  border: Border.all(color: Colors.blue),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Helping ${activeChar.name} to obtain the fusion skill ${player.activeFusionType!.displayName} ${activeFusion.level}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, _) {
+        debugPrint('[OwnEquipmentScreen] Error loading characters for fusion: $err');
+        return const SizedBox.shrink();
+      },
     );
   }
 
