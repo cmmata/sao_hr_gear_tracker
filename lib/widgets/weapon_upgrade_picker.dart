@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
@@ -16,16 +17,38 @@ class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
   WeaponType _selectedType = WeaponType.sword;
   final _valueController = TextEditingController();
   List<Character> _suggestions = [];
+  Timer? _debounceTimer;
 
-  void _calculateUpgrade() async {
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _valueController.dispose();
+    super.dispose();
+  }
+
+  void _calculateUpgrade() {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), _performCalculation);
+  }
+
+  Future<void> _performCalculation() async {
+    if (!mounted) return;
+
     final text = _valueController.text;
     if (text.isEmpty || int.tryParse(text) == null) {
-      if (mounted) setState(() => _suggestions = []);
+      setState(() => _suggestions = []);
       return;
     }
     final val = parseStat(text);
 
-    final characters = await ref.read(charactersProvider.future);
+    final charactersAsync = ref.read(charactersProvider);
+    final List<Character> characters;
+
+    if (charactersAsync.hasValue) {
+      characters = charactersAsync.value!;
+    } else {
+      characters = await ref.read(charactersProvider.future);
+    }
 
     final candidateList = characters
         .where((c) => c.weaponType == _selectedType) // Match weapon type
