@@ -146,7 +146,7 @@ class SkillFusion {
         (e) => e.name == map['type'],
         orElse: () => SkillFusionType.attacker,
       )
-      ..level = map['level'] as int? ?? 0;
+      ..level = (map['level'] as int? ?? 0).clamp(0, 5);
   }
 }
 
