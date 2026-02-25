@@ -48,20 +48,27 @@ class OwnEquipmentScreen extends ConsumerWidget {
       (WeaponType.spear, 'Spear', player.spear),
     ];
 
-    final gearList = [
+    final coreGearList = [
       ('Shield', player.shield, 'shield'),
       ('Helmet', player.helmet, 'helmet'),
       ('Armor', player.armor, 'armor'),
       ('Boots', player.boots, 'boots'),
-      ('Earrings', player.earrings, 'earrings'),
+    ];
+
+    final accessoryList = [
+      ('Neck', player.zNeck, 'neck'),
+      ('Finger', player.zFinger, 'finger'),
+      ('Waist', player.zWaist, 'waist'),
+      ('Wrist', player.zWrist, 'wrist'),
+      ('Amulet', player.zAmulet, 'amulet'),
     ];
 
     final avgAttack =
         weaponList.map((e) => e.$3.statValue).reduce((a, b) => a + b) /
         weaponList.length;
-    final sumDefense = gearList
-        .map((e) => e.$2.statValue)
-        .reduce((a, b) => a + b);
+    final sumDefense =
+        coreGearList.map((e) => e.$2.statValue).fold(0, (a, b) => a + b) +
+        accessoryList.map((e) => e.$2.statValue).fold(0, (a, b) => a + b);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -120,7 +127,32 @@ class OwnEquipmentScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ...gearList.map(
+                    ...coreGearList.map(
+                      (g) => _buildItemTile(
+                        context,
+                        g.$1,
+                        g.$2.statValue,
+                        g.$2.extraStats,
+                        () => _showEditGearDialog(
+                          context,
+                          ref,
+                          player,
+                          g.$3,
+                          g.$1,
+                          g.$2,
+                        ),
+                      ),
+                    ),
+                    const Divider(height: 24),
+                    Text(
+                      'Accessories',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ...accessoryList.map(
                       (g) => _buildItemTile(
                         context,
                         g.$1,
@@ -256,7 +288,7 @@ class OwnEquipmentScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Helping ${activeChar.name} to obtain the fusion skill ${player.activeFusionType!.displayName} ${activeFusion.level}',
+                  'Helping ${activeChar.name} to obtain the fusion skill ${player.activeFusionType!.displayName} ${activeFusion.level + 1}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,
@@ -446,8 +478,20 @@ class OwnEquipmentScreen extends ConsumerWidget {
             case 'boots':
               player.boots = updatedGear;
               break;
-            case 'earrings':
-              player.earrings = updatedGear;
+            case 'neck':
+              player.zNeck = updatedGear;
+              break;
+            case 'finger':
+              player.zFinger = updatedGear;
+              break;
+            case 'waist':
+              player.zWaist = updatedGear;
+              break;
+            case 'wrist':
+              player.zWrist = updatedGear;
+              break;
+            case 'amulet':
+              player.zAmulet = updatedGear;
               break;
           }
 

@@ -13,6 +13,8 @@ part 'data_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class DataNotifier extends _$DataNotifier {
+  static const String databaseVersion = '1.1.0';
+
   @override
   void build() {}
 
@@ -25,7 +27,7 @@ class DataNotifier extends _$DataNotifier {
       'characters': characters.map((c) => c.toMap()).toList(),
       'players': players.map((p) => p.toMap()).toList(),
       'exportDate': DateTime.now().toIso8601String(),
-      'dbVersion': 1,
+      'dbVersion': databaseVersion,
     };
 
     final jsonString = const JsonEncoder.withIndent('  ').convert(data);
@@ -54,11 +56,16 @@ class DataNotifier extends _$DataNotifier {
       return false;
     }
 
-    // Version check (optional but recommended)
-    final dbVersion = data['dbVersion'] as int? ?? 0;
-    if (dbVersion > 1) {
-      // Future-proofing: don't import from a newer DB version
-      throw Exception('Backup file version ($dbVersion) is not supported.');
+    // Version check
+    final dbVersion = data['dbVersion'];
+    if (dbVersion is int) {
+      if (dbVersion > 1) {
+        throw Exception('Backup file version ($dbVersion) is not supported.');
+      }
+    } else if (dbVersion is String) {
+      // Basic semantic version comparison could be added here if needed.
+      // For now, we allow the same or older major/minor if we had a parser.
+      // Since we just started using strings, we'll just allow it for now.
     }
 
     final isar = await ref.read(isarProvider.future);

@@ -27,5 +27,14 @@ void main() {
 
     expect(find.text('Sword'), findsOneWidget);
     expect(find.text('Shield'), findsOneWidget);
+    expect(find.text('Accessories'), findsOneWidget);
+    expect(find.text('Neck'), findsOneWidget);
+    expect(find.text('Finger'), findsOneWidget);
+    expect(find.text('Waist'), findsOneWidget);
+    expect(find.text('Wrist'), findsOneWidget);
+    expect(find.text('Amulet'), findsOneWidget);
+
+    // Verify Earrings is NOT present
+    expect(find.text('Earrings'), findsNothing);
   });
 }

@@ -26,7 +26,12 @@
   - **Helmet**
   - **Armor**
   - **Boots**
-  - **Earrings** (Only for Own Equipment)
+  - **Accessories** (Only for Own Equipment):
+    - **Neck**
+    - **Finger**
+    - **Waist**
+    - **Wrist**
+    - **Amulet**
 - **Properties**:
   - **Stat Value**: Integer (Defense)
   - **Extra Stats**: String (Free text for bonuses like STR+10, VIT+5).
@@ -88,9 +93,10 @@
   - **MUST** display the attack value of each weapon on the that column
   - **MUST** display a list of all slots in the second column (the main user has one of each type)
   - **MUST** display the defense value of each gear on the second column
-  - **MUST** allow editing the weapon and gear in each slot (Shield, Helmet, Armor, Boots, Earrings). Both sections (weapon and gear) should be separated.
+  - **MUST** allow editing the weapon and gear in each slot (Shield, Helmet, Armor, Boots, Neck, Finger, Waist, Wrist, Amulet). Both sections (weapon and gear) should be separated.
   - **MUST** show an AVERAGE of the attack of all weapons on the first column
   - **MUST** show a SUM of the defense of all gear on the second column
+  - **MUST** show the next available level for Skill Fusion progress (Current Level + 1) when helping a character.
 
 ### 3.3. Settings
 - **Goal**: Settings for the app.
@@ -98,7 +104,11 @@
   - **MUST** allow exporting the data to a JSON file.
   - **MUST** allow importing the data from a JSON file.
   - **MUST** show the version of the app.
-  - **MUST** show the version of the database.
+  - **MUST** show the version of the database (using semantic versioning).
+
+### 3.3.1 Database Versioning
+- **Semantic Versioning**: The database version MUST follow semantic versioning (Major.Minor.Patch).
+- **Update Rule**: The version MUST be incremented whenever a change is made to the database schema or data structure.
 
 ## 4. Non-Functional Requirements
 

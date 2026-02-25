@@ -26,6 +26,12 @@ class Player {
   Gear boots = Gear();
   Gear earrings = Gear();
 
+  Gear zNeck = Gear();
+  Gear zFinger = Gear();
+  Gear zWaist = Gear();
+  Gear zWrist = Gear();
+  Gear zAmulet = Gear();
+
   int? zActiveFusionCharacterId;
   @ignore
   int? get activeFusionCharacterId => zActiveFusionCharacterId;
@@ -59,6 +65,11 @@ class Player {
       'armor': armor.toMap(),
       'boots': boots.toMap(),
       'earrings': earrings.toMap(),
+      'neck': zNeck.toMap(),
+      'finger': zFinger.toMap(),
+      'waist': zWaist.toMap(),
+      'wrist': zWrist.toMap(),
+      'amulet': zAmulet.toMap(),
       'activeFusionCharacterId': activeFusionCharacterId,
       'activeFusionType': activeFusionType?.name,
     };
@@ -85,6 +96,11 @@ class Player {
       ..armor = Gear.fromMap(map['armor'] as Map<String, dynamic>? ?? {})
       ..boots = Gear.fromMap(map['boots'] as Map<String, dynamic>? ?? {})
       ..earrings = Gear.fromMap(map['earrings'] as Map<String, dynamic>? ?? {})
+      ..zNeck = Gear.fromMap(map['neck'] as Map<String, dynamic>? ?? {})
+      ..zFinger = Gear.fromMap(map['finger'] as Map<String, dynamic>? ?? {})
+      ..zWaist = Gear.fromMap(map['waist'] as Map<String, dynamic>? ?? {})
+      ..zWrist = Gear.fromMap(map['wrist'] as Map<String, dynamic>? ?? {})
+      ..zAmulet = Gear.fromMap(map['amulet'] as Map<String, dynamic>? ?? {})
       ..activeFusionCharacterId = map['activeFusionCharacterId'] as int?;
 
     if (map['activeFusionType'] != null) {
