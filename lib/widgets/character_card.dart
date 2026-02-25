@@ -60,76 +60,109 @@ class CharacterCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon Placeholder (Class Icon)
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.5),
-                  ),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    _getWeaponIconPath(character.weaponType),
+              // Row 1: Weapon Icon + Name + Edit Button
+              Row(
+                children: [
+                  Container(
                     width: 32,
                     height: 32,
-                    color: theme.colorScheme.primary,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        _getWeaponIconPath(character.weaponType),
+                        width: 20,
+                        height: 20,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              // Name and Stats
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
                       character.name ?? 'Unknown',
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        _StatBadge(
-                          label: 'ATK',
-                          value: character.attack.toString(),
-                          color: Colors.red.shade400,
-                        ),
-                        const SizedBox(width: 8),
-                        _StatBadge(
-                          label: 'DEF',
-                          value: character.totalDefense.toString(),
-                          color: Colors.blue.shade400,
-                        ),
-                        const SizedBox(width: 8),
-                        _StatBadge(
-                          label: 'BED',
-                          value: character.allConversationsSeen
-                              ? 'MAX'
-                              : character.bedtimes.toString(),
-                          color: character.allConversationsSeen
-                              ? Colors.green.shade400
-                              : Colors.purple.shade400,
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit_outlined),
+                    onPressed: onEdit,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // Row 2: ATK, DEF, BED badges
+              Row(
+                children: [
+                  _StatBadge(
+                    label: 'ATK',
+                    value: character.attack.toString(),
+                    color: Colors.red.shade400,
+                  ),
+                  const SizedBox(width: 8),
+                  _StatBadge(
+                    label: 'DEF',
+                    value: character.totalDefense.toString(),
+                    color: Colors.blue.shade400,
+                  ),
+                  const SizedBox(width: 8),
+                  _StatBadge(
+                    label: 'BED',
+                    value: character.allConversationsSeen
+                        ? 'MAX'
+                        : character.bedtimes.toString(),
+                    color: character.allConversationsSeen
+                        ? Colors.green.shade400
+                        : Colors.purple.shade400,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // Row 3: Skill fusion level + type
+              if (character.skillFusions.isNotEmpty)
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: character.skillFusions.map((fusion) {
+                    return _FusionBadge(fusion: fusion);
+                  }).toList(),
                 ),
-              ),
-              // Edit Button
-              IconButton(
-                icon: const Icon(Icons.edit_outlined),
-                onPressed: onEdit,
-              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FusionBadge extends StatelessWidget {
+  final SkillFusion fusion;
+
+  const _FusionBadge({required this.fusion});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Colors.orange.shade700;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        '${fusion.type.displayName} Lv.${fusion.level}',
+        style: TextStyle(
+          fontSize: 10,
+          color: color,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

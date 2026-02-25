@@ -132,5 +132,31 @@ void main() {
 
       expect(find.text('MAX'), findsOneWidget);
     });
+
+    testWidgets('displays skill fusion badges', (WidgetTester tester) async {
+      character.skillFusions = [
+        SkillFusion()
+          ..type = SkillFusionType.attacker
+          ..level = 2,
+        SkillFusion()
+          ..type = SkillFusionType.tank
+          ..level = 1,
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CharacterCard(
+              character: character,
+              onTap: () {},
+              onEdit: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Attacker Lv.2'), findsOneWidget);
+      expect(find.text('Tank Lv.1'), findsOneWidget);
+    });
   });
 }

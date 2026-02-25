@@ -75,7 +75,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const Divider(color: Colors.orange),
           _buildInfoRow('App Version', _appVersion),
-          _buildInfoRow('Database Version', '1.0.0'),
+          _buildInfoRow('Database Version', DataNotifier.databaseVersion),
         ],
       ),
     );

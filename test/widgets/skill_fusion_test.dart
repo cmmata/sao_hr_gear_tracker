@@ -85,7 +85,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(
-      find.text('Helping Kirito to obtain the fusion skill Attacker 3'),
+      find.text('Helping Kirito to obtain the fusion skill Attacker 4'),
       findsOneWidget,
     );
   });
