@@ -67,6 +67,52 @@ void main() {
       expect(fromMap.shield.statValue, 80);
     });
 
+    test('SkillFusion serialization', () {
+      final fusion = SkillFusion()
+        ..type = SkillFusionType.tank
+        ..level = 3;
+
+      final map = fusion.toMap();
+      final fromMap = SkillFusion.fromMap(map);
+
+      expect(fromMap.type, SkillFusionType.tank);
+      expect(fromMap.level, 3);
+    });
+
+    test('Character with SkillFusions serialization', () {
+      final char = Character()
+        ..name = 'Asuna'
+        ..skillFusions = [
+          SkillFusion()
+            ..type = SkillFusionType.healer
+            ..level = 5,
+          SkillFusion()
+            ..type = SkillFusionType.attacker
+            ..level = 2,
+        ];
+
+      final map = char.toMap();
+      final fromMap = Character.fromMap(map);
+
+      expect(fromMap.skillFusions.length, 2);
+      expect(fromMap.skillFusions[0].type, SkillFusionType.healer);
+      expect(fromMap.skillFusions[0].level, 5);
+      expect(fromMap.skillFusions[1].type, SkillFusionType.attacker);
+      expect(fromMap.skillFusions[1].level, 2);
+    });
+
+    test('Player with Active Fusion serialization', () {
+      final player = Player()
+        ..activeFusionCharacterId = 456
+        ..activeFusionType = SkillFusionType.buffer;
+
+      final map = player.toMap();
+      final fromMap = Player.fromMap(map);
+
+      expect(fromMap.activeFusionCharacterId, 456);
+      expect(fromMap.activeFusionType, SkillFusionType.buffer);
+    });
+
     test('Player fromMap with missing keys handles defaults', () {
       final map = {
         'id': 0,

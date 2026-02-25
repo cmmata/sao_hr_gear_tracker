@@ -115,6 +115,17 @@ const PlayerSchema = CollectionSchema(
 
       target: r'Weapon',
     ),
+    r'zActiveFusionCharacterId': PropertySchema(
+      id: 14,
+      name: r'zActiveFusionCharacterId',
+      type: IsarType.long,
+    ),
+    r'zActiveFusionType': PropertySchema(
+      id: 15,
+      name: r'zActiveFusionType',
+      type: IsarType.byte,
+      enumMap: _PlayerzActiveFusionTypeEnumValueMap,
+    ),
   },
 
   estimateSize: _playerEstimateSize,
@@ -277,6 +288,8 @@ void _playerSerialize(
     WeaponSchema.serialize,
     object.twoHandedSword,
   );
+  writer.writeLong(offsets[14], object.zActiveFusionCharacterId);
+  writer.writeByte(offsets[15], object.zActiveFusionType.index);
 }
 
 Player _playerDeserialize(
@@ -385,6 +398,12 @@ Player _playerDeserialize(
         allOffsets,
       ) ??
       Weapon();
+  object.zActiveFusionCharacterId = reader.readLongOrNull(offsets[14]);
+  object.zActiveFusionType =
+      _PlayerzActiveFusionTypeValueEnumMap[reader.readByteOrNull(
+        offsets[15],
+      )] ??
+      SkillFusionType.attacker;
   return object;
 }
 
@@ -507,10 +526,31 @@ P _playerDeserializeProp<P>(
               ) ??
               Weapon())
           as P;
+    case 14:
+      return (reader.readLongOrNull(offset)) as P;
+    case 15:
+      return (_PlayerzActiveFusionTypeValueEnumMap[reader.readByteOrNull(
+                offset,
+              )] ??
+              SkillFusionType.attacker)
+          as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _PlayerzActiveFusionTypeEnumValueMap = {
+  'attacker': 0,
+  'tank': 1,
+  'healer': 2,
+  'buffer': 3,
+};
+const _PlayerzActiveFusionTypeValueEnumMap = {
+  0: SkillFusionType.attacker,
+  1: SkillFusionType.tank,
+  2: SkillFusionType.healer,
+  3: SkillFusionType.buffer,
+};
 
 Id _playerGetId(Player object) {
   return object.id;
@@ -659,6 +699,139 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionCharacterIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'zActiveFusionCharacterId'),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionCharacterIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'zActiveFusionCharacterId'),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionCharacterIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'zActiveFusionCharacterId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionCharacterIdGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'zActiveFusionCharacterId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionCharacterIdLessThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'zActiveFusionCharacterId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionCharacterIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'zActiveFusionCharacterId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> zActiveFusionTypeEqualTo(
+    SkillFusionType value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'zActiveFusionType', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition>
+  zActiveFusionTypeGreaterThan(SkillFusionType value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'zActiveFusionType',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> zActiveFusionTypeLessThan(
+    SkillFusionType value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'zActiveFusionType',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> zActiveFusionTypeBetween(
+    SkillFusionType lower,
+    SkillFusionType upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'zActiveFusionType',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
 }
 
 extension PlayerQueryObject on QueryBuilder<Player, Player, QFilterCondition> {
@@ -777,7 +950,32 @@ extension PlayerQueryObject on QueryBuilder<Player, Player, QFilterCondition> {
 
 extension PlayerQueryLinks on QueryBuilder<Player, Player, QFilterCondition> {}
 
-extension PlayerQuerySortBy on QueryBuilder<Player, Player, QSortBy> {}
+extension PlayerQuerySortBy on QueryBuilder<Player, Player, QSortBy> {
+  QueryBuilder<Player, Player, QAfterSortBy> sortByZActiveFusionCharacterId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionCharacterId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy>
+  sortByZActiveFusionCharacterIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionCharacterId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> sortByZActiveFusionType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> sortByZActiveFusionTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionType', Sort.desc);
+    });
+  }
+}
 
 extension PlayerQuerySortThenBy on QueryBuilder<Player, Player, QSortThenBy> {
   QueryBuilder<Player, Player, QAfterSortBy> thenById() {
@@ -791,9 +989,46 @@ extension PlayerQuerySortThenBy on QueryBuilder<Player, Player, QSortThenBy> {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<Player, Player, QAfterSortBy> thenByZActiveFusionCharacterId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionCharacterId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy>
+  thenByZActiveFusionCharacterIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionCharacterId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> thenByZActiveFusionType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> thenByZActiveFusionTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'zActiveFusionType', Sort.desc);
+    });
+  }
 }
 
-extension PlayerQueryWhereDistinct on QueryBuilder<Player, Player, QDistinct> {}
+extension PlayerQueryWhereDistinct on QueryBuilder<Player, Player, QDistinct> {
+  QueryBuilder<Player, Player, QDistinct> distinctByZActiveFusionCharacterId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'zActiveFusionCharacterId');
+    });
+  }
+
+  QueryBuilder<Player, Player, QDistinct> distinctByZActiveFusionType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'zActiveFusionType');
+    });
+  }
+}
 
 extension PlayerQueryProperty on QueryBuilder<Player, Player, QQueryProperty> {
   QueryBuilder<Player, int, QQueryOperations> idProperty() {
@@ -883,6 +1118,20 @@ extension PlayerQueryProperty on QueryBuilder<Player, Player, QQueryProperty> {
   QueryBuilder<Player, Weapon, QQueryOperations> twoHandedSwordProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'twoHandedSword');
+    });
+  }
+
+  QueryBuilder<Player, int?, QQueryOperations>
+  zActiveFusionCharacterIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'zActiveFusionCharacterId');
+    });
+  }
+
+  QueryBuilder<Player, SkillFusionType, QQueryOperations>
+  zActiveFusionTypeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'zActiveFusionType');
     });
   }
 }

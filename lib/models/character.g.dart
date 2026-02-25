@@ -70,6 +70,13 @@ const CharacterSchema = CollectionSchema(
       name: r'zAllConversationsSeen',
       type: IsarType.bool,
     ),
+    r'zSkillFusions': PropertySchema(
+      id: 10,
+      name: r'zSkillFusions',
+      type: IsarType.objectList,
+
+      target: r'SkillFusion',
+    ),
   },
 
   estimateSize: _characterEstimateSize,
@@ -93,7 +100,11 @@ const CharacterSchema = CollectionSchema(
     ),
   },
   links: {},
-  embeddedSchemas: {r'Weapon': WeaponSchema, r'Gear': GearSchema},
+  embeddedSchemas: {
+    r'Weapon': WeaponSchema,
+    r'Gear': GearSchema,
+    r'SkillFusion': SkillFusionSchema,
+  },
 
   getId: _characterGetId,
   getLinks: _characterGetLinks,
@@ -148,6 +159,14 @@ int _characterEstimateSize(
           3 + WeaponSchema.estimateSize(value, allOffsets[Weapon]!, allOffsets);
     }
   }
+  bytesCount += 3 + object.zSkillFusions.length * 3;
+  {
+    final offsets = allOffsets[SkillFusion]!;
+    for (var i = 0; i < object.zSkillFusions.length; i++) {
+      final value = object.zSkillFusions[i];
+      bytesCount += SkillFusionSchema.estimateSize(value, offsets, allOffsets);
+    }
+  }
   return bytesCount;
 }
 
@@ -192,6 +211,12 @@ void _characterSerialize(
   );
   writer.writeByte(offsets[8], object.weaponType.index);
   writer.writeBool(offsets[9], object.zAllConversationsSeen);
+  writer.writeObjectList<SkillFusion>(
+    offsets[10],
+    allOffsets,
+    SkillFusionSchema.serialize,
+    object.zSkillFusions,
+  );
 }
 
 Character _characterDeserialize(
@@ -234,6 +259,14 @@ Character _characterDeserialize(
       _CharacterweaponTypeValueEnumMap[reader.readByteOrNull(offsets[8])] ??
       WeaponType.sword;
   object.zAllConversationsSeen = reader.readBool(offsets[9]);
+  object.zSkillFusions =
+      reader.readObjectList<SkillFusion>(
+        offsets[10],
+        SkillFusionSchema.deserialize,
+        allOffsets,
+        SkillFusion(),
+      ) ??
+      [];
   return object;
 }
 
@@ -291,6 +324,15 @@ P _characterDeserializeProp<P>(
           as P;
     case 9:
       return (reader.readBool(offset)) as P;
+    case 10:
+      return (reader.readObjectList<SkillFusion>(
+                offset,
+                SkillFusionSchema.deserialize,
+                allOffsets,
+                SkillFusion(),
+              ) ??
+              [])
+          as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -973,6 +1015,59 @@ extension CharacterQueryFilter
       );
     });
   }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'zSkillFusions', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'zSkillFusions', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'zSkillFusions', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsLengthLessThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'zSkillFusions', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'zSkillFusions', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'zSkillFusions',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
 }
 
 extension CharacterQueryObject
@@ -1014,6 +1109,13 @@ extension CharacterQueryObject
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'weapon');
+    });
+  }
+
+  QueryBuilder<Character, Character, QAfterFilterCondition>
+  zSkillFusionsElement(FilterQuery<SkillFusion> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'zSkillFusions');
     });
   }
 }
@@ -1264,6 +1366,13 @@ extension CharacterQueryProperty
   zAllConversationsSeenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'zAllConversationsSeen');
+    });
+  }
+
+  QueryBuilder<Character, List<SkillFusion>, QQueryOperations>
+  zSkillFusionsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'zSkillFusions');
     });
   }
 }
@@ -1636,3 +1745,211 @@ extension WeaponQueryFilter on QueryBuilder<Weapon, Weapon, QFilterCondition> {
 }
 
 extension WeaponQueryObject on QueryBuilder<Weapon, Weapon, QFilterCondition> {}
+
+// coverage:ignore-file
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
+
+const SkillFusionSchema = Schema(
+  name: r'SkillFusion',
+  id: 3944743368269468800,
+  properties: {
+    r'level': PropertySchema(id: 0, name: r'level', type: IsarType.long),
+    r'type': PropertySchema(
+      id: 1,
+      name: r'type',
+      type: IsarType.byte,
+      enumMap: _SkillFusiontypeEnumValueMap,
+    ),
+  },
+
+  estimateSize: _skillFusionEstimateSize,
+  serialize: _skillFusionSerialize,
+  deserialize: _skillFusionDeserialize,
+  deserializeProp: _skillFusionDeserializeProp,
+);
+
+int _skillFusionEstimateSize(
+  SkillFusion object,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  var bytesCount = offsets.last;
+  return bytesCount;
+}
+
+void _skillFusionSerialize(
+  SkillFusion object,
+  IsarWriter writer,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  writer.writeLong(offsets[0], object.level);
+  writer.writeByte(offsets[1], object.type.index);
+}
+
+SkillFusion _skillFusionDeserialize(
+  Id id,
+  IsarReader reader,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  final object = SkillFusion();
+  object.level = reader.readLong(offsets[0]);
+  object.type =
+      _SkillFusiontypeValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+      SkillFusionType.attacker;
+  return object;
+}
+
+P _skillFusionDeserializeProp<P>(
+  IsarReader reader,
+  int propertyId,
+  int offset,
+  Map<Type, List<int>> allOffsets,
+) {
+  switch (propertyId) {
+    case 0:
+      return (reader.readLong(offset)) as P;
+    case 1:
+      return (_SkillFusiontypeValueEnumMap[reader.readByteOrNull(offset)] ??
+              SkillFusionType.attacker)
+          as P;
+    default:
+      throw IsarError('Unknown property with id $propertyId');
+  }
+}
+
+const _SkillFusiontypeEnumValueMap = {
+  'attacker': 0,
+  'tank': 1,
+  'healer': 2,
+  'buffer': 3,
+};
+const _SkillFusiontypeValueEnumMap = {
+  0: SkillFusionType.attacker,
+  1: SkillFusionType.tank,
+  2: SkillFusionType.healer,
+  3: SkillFusionType.buffer,
+};
+
+extension SkillFusionQueryFilter
+    on QueryBuilder<SkillFusion, SkillFusion, QFilterCondition> {
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> levelEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'level', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition>
+  levelGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'level',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> levelLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'level',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> levelBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'level',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> typeEqualTo(
+    SkillFusionType value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'type', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> typeGreaterThan(
+    SkillFusionType value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'type',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> typeLessThan(
+    SkillFusionType value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'type',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<SkillFusion, SkillFusion, QAfterFilterCondition> typeBetween(
+    SkillFusionType lower,
+    SkillFusionType upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'type',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+}
+
+extension SkillFusionQueryObject
+    on QueryBuilder<SkillFusion, SkillFusion, QFilterCondition> {}
