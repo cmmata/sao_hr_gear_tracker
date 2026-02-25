@@ -276,7 +276,7 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
-        title: Text(fusion.type.name.toUpperCase()),
+        title: Text(fusion.type.displayName),
         subtitle: Text('Level: ${fusion.level}'),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
@@ -323,7 +323,7 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
                   });
                   Navigator.pop(context);
                 },
-                child: Text(type.name.toUpperCase()),
+                child: Text(type.displayName),
               ),
             )
             .toList(),

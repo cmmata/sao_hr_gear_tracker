@@ -171,6 +171,10 @@ class OwnEquipmentScreen extends ConsumerWidget {
                 .firstOrNull
             : null;
 
+        final activeFusion = activeChar?.skillFusions
+            .where((f) => f.type == player.activeFusionType)
+            .firstOrNull;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -228,7 +232,7 @@ class OwnEquipmentScreen extends ConsumerWidget {
                     .map(
                       (f) => DropdownMenuItem(
                         value: f.type,
-                        child: Text(f.type.name.toUpperCase()),
+                        child: Text(f.type.displayName),
                       ),
                     )
                     .toList(),
@@ -240,7 +244,8 @@ class OwnEquipmentScreen extends ConsumerWidget {
             ],
             if (player.activeFusionCharacterId != null &&
                 player.activeFusionType != null &&
-                activeChar != null) ...[
+                activeChar != null &&
+                activeFusion != null) ...[
               const SizedBox(height: 24),
               Container(
                 width: double.infinity,
@@ -251,7 +256,7 @@ class OwnEquipmentScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Helping ${activeChar.name} to obtain the fusion skill ${player.activeFusionType!.name.toUpperCase()} ${activeChar.skillFusions.firstWhere((f) => f.type == player.activeFusionType).level}',
+                  'Helping ${activeChar.name} to obtain the fusion skill ${player.activeFusionType!.displayName} ${activeFusion.level}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,

@@ -124,6 +124,12 @@ class Weapon {
 
 enum SkillFusionType { attacker, tank, healer, buffer }
 
+extension SkillFusionTypeExtension on SkillFusionType {
+  String get displayName {
+    return name[0].toUpperCase() + name.substring(1);
+  }
+}
+
 @embedded
 class SkillFusion {
   SkillFusion();
@@ -146,7 +152,7 @@ class SkillFusion {
         (e) => e.name == map['type'],
         orElse: () => SkillFusionType.attacker,
       )
-      ..level = (map['level'] as int? ?? 0).clamp(0, 5);
+      ..level = map['level'] as int? ?? 0;
   }
 }
 

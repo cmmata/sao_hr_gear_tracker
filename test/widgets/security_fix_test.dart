@@ -49,7 +49,7 @@ void main() {
     // Add a skill fusion (now required)
     await tester.tap(find.byIcon(Icons.add_circle));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('ATTACKER'));
+    await tester.tap(find.text('Attacker'));
     await tester.pumpAndSettle();
 
     // Save
