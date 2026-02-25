@@ -26,11 +26,11 @@ class Player {
   Gear boots = Gear();
   Gear earrings = Gear();
 
-  Gear neck = Gear();
-  Gear finger = Gear();
-  Gear waist = Gear();
-  Gear wrist = Gear();
-  Gear amulet = Gear();
+  Gear zNeck = Gear();
+  Gear zFinger = Gear();
+  Gear zWaist = Gear();
+  Gear zWrist = Gear();
+  Gear zAmulet = Gear();
 
   int? zActiveFusionCharacterId;
   @ignore

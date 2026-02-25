@@ -63,9 +63,11 @@ class DataNotifier extends _$DataNotifier {
         throw Exception('Backup file version ($dbVersion) is not supported.');
       }
     } else if (dbVersion is String) {
-      // Basic semantic version comparison could be added here if needed.
-      // For now, we allow the same or older major/minor if we had a parser.
-      // Since we just started using strings, we'll just allow it for now.
+      if (isVersionGreater(dbVersion, databaseVersion)) {
+        throw Exception(
+          'Backup file version ($dbVersion) is newer than app database version ($databaseVersion).',
+        );
+      }
     }
 
     final isar = await ref.read(isarProvider.future);
@@ -92,5 +94,20 @@ class DataNotifier extends _$DataNotifier {
     });
 
     return true;
+  }
+
+  bool isVersionGreater(String v1, String v2) {
+    final parts1 = v1.split('.');
+    final parts2 = v2.split('.');
+
+    final length =
+        parts1.length > parts2.length ? parts1.length : parts2.length;
+    for (var i = 0; i < length; i++) {
+      final p1 = i < parts1.length ? int.tryParse(parts1[i]) ?? 0 : 0;
+      final p2 = i < parts2.length ? int.tryParse(parts2[i]) ?? 0 : 0;
+      if (p1 > p2) return true;
+      if (p1 < p2) return false;
+    }
+    return false;
   }
 }
