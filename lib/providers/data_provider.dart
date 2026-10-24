@@ -49,6 +49,12 @@ class DataNotifier extends _$DataNotifier {
     if (result == null || result.files.single.path == null) return false;
 
     final file = File(result.files.single.path!);
+
+    // SECURITY FIX: Prevent DoS attacks (memory exhaustion) by limiting import file size to 5MB
+    if (file.lengthSync() > 5 * 1024 * 1024) {
+      throw Exception('Import failed: File is too large. Maximum size is 5MB.');
+    }
+
     final jsonString = await file.readAsString();
     final data = jsonDecode(jsonString) as Map<String, dynamic>;
 
