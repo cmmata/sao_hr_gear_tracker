@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../providers/character_provider.dart';
@@ -98,6 +99,8 @@ class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
                 Expanded(
                   child: TextField(
                     controller: _valueController,
+                    maxLength: 20,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'New Atk'),
                     onChanged: (_) => _calculateUpgrade(),
