@@ -576,6 +576,7 @@ class _StatEditDialogState extends State<StatEditDialog> {
             const SizedBox(height: 16),
             TextField(
               controller: _extraController,
+              maxLength: 50,
               decoration: const InputDecoration(
                 labelText: 'Extra Stats (e.g. STR+10)',
                 border: OutlineInputBorder(),
