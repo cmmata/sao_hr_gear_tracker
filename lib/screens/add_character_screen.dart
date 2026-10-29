@@ -183,6 +183,7 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _weaponAttackController,
+              maxLength: 10,
               decoration: const InputDecoration(
                 labelText: 'Attack Power',
                 border: OutlineInputBorder(),
@@ -259,6 +260,7 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
             ),
             TextField(
               controller: _bedtimesController,
+              maxLength: 10,
               decoration: const InputDecoration(
                 labelText: 'Number of bedtimes',
                 border: OutlineInputBorder(),
@@ -334,6 +336,7 @@ class _AddCharacterScreenState extends ConsumerState<AddCharacterScreen> {
   Widget _buildGearField(String label, TextEditingController controller) {
     return TextField(
       controller: controller,
+      maxLength: 10,
       decoration: InputDecoration(
         labelText: label,
         border: const OutlineInputBorder(),

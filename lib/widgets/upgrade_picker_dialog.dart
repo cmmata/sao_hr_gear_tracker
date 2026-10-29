@@ -114,6 +114,7 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
                 Expanded(
                   child: TextField(
                     controller: _valueController,
+                    maxLength: 10,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'New Def'),
                     onChanged: (_) => _calculateUpgrade(),

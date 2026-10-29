@@ -98,6 +98,7 @@ class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
                 Expanded(
                   child: TextField(
                     controller: _valueController,
+                    maxLength: 10,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'New Atk'),
                     onChanged: (_) => _calculateUpgrade(),
