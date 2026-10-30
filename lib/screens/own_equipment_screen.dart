@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/character_provider.dart';
 import '../providers/player_provider.dart';
@@ -567,7 +568,8 @@ class _StatEditDialogState extends State<StatEditDialog> {
             const SizedBox(height: 20),
             TextField(
               controller: _statController,
-              maxLength: 10,
+              maxLength: 20,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 labelText: widget.labelValue,
                 border: const OutlineInputBorder(),
@@ -578,6 +580,7 @@ class _StatEditDialogState extends State<StatEditDialog> {
             TextField(
               controller: _extraController,
               maxLength: 100,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: const InputDecoration(
                 labelText: 'Extra Stats (e.g. STR+10)',
                 border: OutlineInputBorder(),

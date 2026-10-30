@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/character.dart';
 import '../providers/character_provider.dart';
@@ -17,6 +18,12 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
   GearSlot _selectedSlot = GearSlot.helmet;
   final _valueController = TextEditingController();
   List<Character> _suggestions = [];
+
+  @override
+  void dispose() {
+    _valueController.dispose();
+    super.dispose();
+  }
 
   void _calculateUpgrade() async {
     final text = _valueController.text;
@@ -114,7 +121,8 @@ class _GearUpgradePickerState extends ConsumerState<GearUpgradePicker> {
                 Expanded(
                   child: TextField(
                     controller: _valueController,
-                    maxLength: 10,
+                    maxLength: 20,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'New Def'),
                     onChanged: (_) => _calculateUpgrade(),
