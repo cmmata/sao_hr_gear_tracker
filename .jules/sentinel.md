@@ -17,3 +17,8 @@
 **Vulnerability:** The Extra Stats input field in `OwnEquipmentScreen` lacked a maximum length constraint (`maxLength`). A malicious or erroneous extremely long input string could cause UI overflow and degradation of performance.
 **Learning:** Always apply length limits to arbitrary text inputs, especially in native or mobile applications, to prevent local UI/performance Denial of Service.
 **Prevention:** Ensure all `TextField` widgets accepting free text include `maxLength` and `maxLengthEnforcement` properties as appropriate for the domain logic.
+
+## 2026-10-29 - [DoS via Unbounded Text Fields]
+**Vulnerability:** TextFields triggering compute logic or number parsing didn't have `maxLength` bounds.
+**Learning:** Unbounded text inputs that trigger `onChanged` logic or handle string-to-number parsing can lock up the main thread (DoS risk) and cause memory exhaustion.
+**Prevention:** Add `maxLength` enforcement on all text inputs, particularly those filtering lists on every keystroke or parsing large integers.
