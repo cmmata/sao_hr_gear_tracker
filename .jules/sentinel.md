@@ -6,3 +6,8 @@
 **Vulnerability:** Numerical and text inputs lacked `maxLength` constraints in Flutter `TextField` widgets.
 **Learning:** By not limiting text field lengths, large strings could lead to slow performance or crashes during saving to the local Isar database.
 **Prevention:** Always add `maxLength` and `maxLengthEnforcement: MaxLengthEnforcement.enforced` to any unbounded `TextField`s receiving user data.
+
+## 2026-10-25 - [Memory Leaks via Missing TextEditingController Disposal]
+**Vulnerability:** Missing `dispose()` methods for `TextEditingController` instances in stateful widgets (e.g., `GearUpgradePicker` and `WeaponUpgradePicker`).
+**Learning:** Frequent instantiations of controllers without disposal in dialogs can lead to memory exhaustion and eventual application crashes (local DoS).
+**Prevention:** Always override `dispose()` in `StatefulWidget` state classes to clean up resources like controllers, animations, and streams.

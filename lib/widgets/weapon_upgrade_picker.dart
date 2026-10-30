@@ -18,6 +18,12 @@ class _WeaponUpgradePickerState extends ConsumerState<WeaponUpgradePicker> {
   final _valueController = TextEditingController();
   List<Character> _suggestions = [];
 
+  @override
+  void dispose() {
+    _valueController.dispose();
+    super.dispose();
+  }
+
   void _calculateUpgrade() async {
     final text = _valueController.text;
     if (text.isEmpty || int.tryParse(text) == null) {
