@@ -76,13 +76,23 @@ class DataNotifier extends _$DataNotifier {
       }
     }
 
+    final charactersData = data['characters'] as List<dynamic>;
+    final playersData = data['players'] as List<dynamic>;
+
+    // SECURITY FIX: Prevent DoS via transaction size exhaustion by limiting entities
+    if (charactersData.length > 1000) {
+      throw Exception('Import failed: Too many characters (max 1000).');
+    }
+    if (playersData.length > 50) {
+      throw Exception('Import failed: Too many players (max 50).');
+    }
+
     final isar = await ref.read(isarProvider.future);
 
     await isar.writeTxn(() async {
       await isar.characters.clear();
       await isar.players.clear();
 
-      final charactersData = data['characters'] as List<dynamic>;
       for (final charMap in charactersData) {
         final character = Character.fromMap(charMap as Map<String, dynamic>);
         // Reset ID to let Isar auto-increment if we want new IDs,
@@ -92,7 +102,6 @@ class DataNotifier extends _$DataNotifier {
         await isar.characters.put(character);
       }
 
-      final playersData = data['players'] as List<dynamic>;
       for (final playerMap in playersData) {
         final player = Player.fromMap(playerMap as Map<String, dynamic>);
         await isar.players.put(player);
