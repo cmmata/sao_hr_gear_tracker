@@ -22,3 +22,8 @@
 **Vulnerability:** TextFields triggering compute logic or number parsing didn't have `maxLength` bounds.
 **Learning:** Unbounded text inputs that trigger `onChanged` logic or handle string-to-number parsing can lock up the main thread (DoS risk) and cause memory exhaustion.
 **Prevention:** Add `maxLength` enforcement on all text inputs, particularly those filtering lists on every keystroke or parsing large integers.
+
+## 2026-10-31 - [DoS via Excessive Entity Creation]
+**Vulnerability:** While file size limits prevent reading extremely large files into memory, a small JSON file (e.g. 1MB) could contain an array of hundreds of thousands of minimal objects. Processing this large array within a single database transaction (`isar.writeTxn`) leads to CPU spikes and application lockups (Denial of Service).
+**Learning:** Raw file size limits are insufficient to protect against DoS attacks in data import logic. The number of logical entities must also be bounded.
+**Prevention:** Always apply length bounds on imported lists/arrays before processing them into a local database or within application memory.
