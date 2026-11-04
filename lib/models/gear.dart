@@ -16,8 +16,16 @@ class Gear {
   }
 
   factory Gear.fromMap(Map<String, dynamic> map) {
+    int statVal = map['statValue'] as int? ?? 0;
+    if (statVal < 0) statVal = 0;
+
+    String? rawExtra = map['extraStats'] as String?;
+    if (rawExtra != null && rawExtra.length > 100) {
+      rawExtra = rawExtra.substring(0, 100);
+    }
+
     return Gear()
-      ..statValue = map['statValue'] as int? ?? 0
-      ..extraStats = map['extraStats'] as String?;
+      ..statValue = statVal
+      ..extraStats = rawExtra;
   }
 }
