@@ -32,3 +32,8 @@
 **Vulnerability:** Data import functionality parsed JSON backups without limiting the lengths of unbounded string fields (`name`, `extraStats`) or verifying values within `fromMap` initializers, which could allow a malicious backup file to cause Memory Exhaustion/DoS.
 **Learning:** File size limits are not fully sufficient to prevent logical Denial of Service (DoS) and application instability if fields themselves aren't bound checked during application data model initialization (`fromMap`).
 **Prevention:** Add string length truncation and basic range validation during object deserialization from untrusted sources.
+
+## 2024-11-05 - [Android Backup Misconfiguration]
+**Vulnerability:** The Android app did not explicitly disable Android auto backups (`android:allowBackup="false"`). By default, this is true, meaning local app data (such as the Isar NoSQL database containing potentially sensitive or local-only user tracking data) could be automatically backed up to a user's Google Drive.
+**Learning:** For a local-first application explicitly claiming no cloud synchronization, allowing default Android backups violates this assumption and can leak data into cloud storage against the advertised privacy guarantees.
+**Prevention:** Always set `android:allowBackup="false"` in the AndroidManifest.xml for local-first mobile applications unless cloud backups are explicitly desired and handled securely.
