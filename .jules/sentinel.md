@@ -27,3 +27,7 @@
 **Vulnerability:** While file size limits prevent reading extremely large files into memory, a small JSON file (e.g. 1MB) could contain an array of hundreds of thousands of minimal objects. Processing this large array within a single database transaction (`isar.writeTxn`) leads to CPU spikes and application lockups (Denial of Service).
 **Learning:** Raw file size limits are insufficient to protect against DoS attacks in data import logic. The number of logical entities must also be bounded.
 **Prevention:** Always apply length bounds on imported lists/arrays before processing them into a local database or within application memory.
+## 2024-11-05 - [Android Backup Misconfiguration]
+**Vulnerability:** The Android app did not explicitly disable Android auto backups (`android:allowBackup="false"`). By default, this is true, meaning local app data (such as the Isar NoSQL database containing potentially sensitive or local-only user tracking data) could be automatically backed up to a user's Google Drive.
+**Learning:** For a local-first application explicitly claiming no cloud synchronization, allowing default Android backups violates this assumption and can leak data into cloud storage against the advertised privacy guarantees.
+**Prevention:** Always set `android:allowBackup="false"` in the AndroidManifest.xml for local-first mobile applications unless cloud backups are explicitly desired and handled securely.
