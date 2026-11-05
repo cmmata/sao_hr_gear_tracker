@@ -61,8 +61,13 @@ class Character {
   }
 
   factory Character.fromMap(Map<String, dynamic> map) {
+    String? rawName = map['name'] as String?;
+    if (rawName != null && rawName.length > Character.maxNameLength) {
+      rawName = rawName.substring(0, Character.maxNameLength);
+    }
+
     final character = Character()
-      ..name = map['name'] as String?
+      ..name = rawName
       ..weaponType = WeaponType.values.firstWhere(
         (e) => e.name == map['weaponType'],
         orElse: () => WeaponType.sword,
@@ -115,10 +120,18 @@ class Weapon {
   }
 
   factory Weapon.fromMap(Map<String, dynamic> map) {
+    int statVal = map['statValue'] as int? ?? 0;
+    if (statVal < 0) statVal = 0;
+
+    String? rawExtra = map['extraStats'] as String?;
+    if (rawExtra != null && rawExtra.length > 100) {
+      rawExtra = rawExtra.substring(0, 100);
+    }
+
     return Weapon()
-      ..statValue = map['statValue'] as int? ?? 0
+      ..statValue = statVal
       ..hands = map['hands'] as int? ?? 1
-      ..extraStats = map['extraStats'] as String?;
+      ..extraStats = rawExtra;
   }
 }
 
